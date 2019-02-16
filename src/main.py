@@ -2,7 +2,7 @@ import cv2
 import sys
 import imutils
 import numpy as np
-
+import svgwrite
 
 
 # All points are considered to be (x, y) with the origin being top left corner and positive y is south.
@@ -136,11 +136,55 @@ def scan_img(img):
 
 img = cv2.imread(sys.argv[1], 0)
 resizedImg = imutils.resize(img, width=500)
-reducedImg = resizedImg[19:192, 400:460]
 
-th3 = cv2.adaptiveThreshold(reducedImg, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 11)
+th3 = cv2.adaptiveThreshold(resizedImg, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 11)
 
-# scan_img(th3)
-# display_image(th3)
+brush = np.array([
+    [ 12,  61, 115,  61,  12],
+    [ 61, 162, 230, 162,  61],
+    [115, 230, 255, 230, 115],
+    [ 61, 162, 230, 162,  61],
+    [ 12,  61, 115,  61,  12],
+])
+brush = brush / 255
 
-print(get_direction([(-1, 1), (3, 1), (1, 2)]))
+threshold = 100
+visited = {}
+
+
+def get_brush_threshold_at_point(point):
+    roi = th3[point[1]:point[1] + brush.shape[0], point[0]:point[0] + brush.shape[1]]
+    if roi.shape == brush.shape:
+        output = roi * brush
+        return output.mean()
+    return None
+
+
+def traverse(point, path):
+    min_thresh = None
+    min_point = None
+    for y in range(point[1] - brush.shape[0], point[1] + brush.shape[0] + 1, brush.shape[0]):
+        for x in range(point[0] - brush.shape[1], point[0] + brush.shape[1] + 1, brush.shape[1]):
+            if "%d,%d" % (x, y) not in visited:
+                visited["%d,%d" % (x, y)] = True
+                thresh = get_brush_threshold_at_point((x, y))
+                if min_thresh is None or thresh < min_thresh:
+                    min_thresh = thresh
+                    min_point = (x, y)
+    if min_point is not None and min_thresh < threshold:
+        path = traverse(min_point, path + [(x, y)])
+    return path
+
+
+drawing = svgwrite.Drawing(width=th3.shape[1], height=th3.shape[0])
+for y in range(0, np.size(th3, 0), brush.shape[0]):
+    for x in range(0, np.size(th3, 1), brush.shape[1]):
+        if "%d,%d" % (x, y) not in visited:
+            visited["%d,%d" % (x, y)] = True
+            thresh = get_brush_threshold_at_point((x, y))
+            if thresh is not None and thresh < threshold:
+                path = traverse((x, y), [(x, y)])
+                for i in range(0, len(path) - 2):
+                    drawing.add(drawing.add(drawing.line(path[i], path[i + 1], stroke=svgwrite.rgb(10, 10, 16, '%'))))
+
+drawing.saveas("Testing.svg")

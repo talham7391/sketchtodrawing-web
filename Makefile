@@ -1,6 +1,6 @@
 
 IMG_DIR := ./samples/
-IMAGE?=simple_1.jpg
+IMAGE?=talha_1.jpg
 
 all: run
 
