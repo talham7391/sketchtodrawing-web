@@ -17,7 +17,7 @@ class App extends Component {
   }
 
   async updateMessage() {
-    let message = await axios.get('http://localhost:4567');
+    let message = await axios.get('http://localhost:5000');
     this.setState({
       message: message.data,
     });
