@@ -138,6 +138,8 @@ img = cv2.imread(sys.argv[1], 0)
 resizedImg = imutils.resize(img, width=500)
 
 th3 = cv2.adaptiveThreshold(resizedImg, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 11)
+th3 = cv2.GaussianBlur(th3, (5, 5), 0)
+th3 = cv2.morphologyEx(th3, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_RECT, (5, 5)))
 
 brush = np.array([
     [ 12,  61, 115,  61,  12],
@@ -150,6 +152,7 @@ brush = brush / 255
 
 threshold = 100
 visited = {}
+brush_jump = 2
 
 
 def get_brush_threshold_at_point(point):
@@ -163,8 +166,8 @@ def get_brush_threshold_at_point(point):
 def traverse(point, path):
     min_thresh = None
     min_point = None
-    for y in range(point[1] - brush.shape[0], point[1] + brush.shape[0] + 1, brush.shape[0]):
-        for x in range(point[0] - brush.shape[1], point[0] + brush.shape[1] + 1, brush.shape[1]):
+    for y in range(point[1] - brush.shape[0] * brush_jump, point[1] + brush.shape[0] * brush_jump + 1, brush.shape[0] * brush_jump):
+        for x in range(point[0] - brush.shape[1] * brush_jump, point[0] + brush.shape[1] * brush_jump + 1, brush.shape[1] * brush_jump):
             if "%d,%d" % (x, y) not in visited:
                 visited["%d,%d" % (x, y)] = True
                 thresh = get_brush_threshold_at_point((x, y))
