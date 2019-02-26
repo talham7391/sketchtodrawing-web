@@ -1,6 +1,7 @@
 import React from 'react';
 import { compose, withHandlers, withState } from 'recompose';
 import App from './App';
+import * as CL from '../CanvasLibrary';
 
 const enhancer = compose(
   withState('imageSource', 'setImageSource', null),
@@ -18,9 +19,14 @@ const enhancer = compose(
 
         await imgload;
         
+        props.canvasRef.current.width = 500;
+        props.canvasRef.current.height = 600;
         const context = props.canvasRef.current.getContext('2d');
         context.drawImage(img, 0, 0, props.canvasRef.current.width, props.canvasRef.current.height);
       }
+    },
+    onAdaptiveThreshold: props => _ => {
+      CL.adaptiveThreshold(props.canvasRef.current);
     },
   })
 );
