@@ -1,14 +1,31 @@
 import React from 'react';
-import {
-  _App,
-} from './styles.js'
+import Steps from '../components/Steps';
+import UploadButton from '../components/buttons/UploadButton';
+import * as S from './styles.js'
 
 const App = props => (
-  <_App>
-    <input type="file" onChange={props.onFileUpload} onLoad={_ => console.log('this ran')}/>
-    <canvas ref={props.canvasRef} />
-    <button onClick={props.onAdaptiveThreshold}>Adaptive Threshold</button>
-  </_App>
+  <S.App>
+    <S.CanvasContainer>
+      { props.isCanvasNull &&
+        <S.UploadImage>
+          <p>Start by uploading an image!</p>
+          <UploadButton onChange={props.onUpload}>Upload</UploadButton>
+        </S.UploadImage>
+      }
+      <S.Canvas show={!props.isCanvasNull} ref={props.canvasRef}></S.Canvas>
+    </S.CanvasContainer>
+    <S.Steps>
+      <Steps
+        currentStep={props.currentStep}
+        steps={[{
+          id: 0,
+          name: 'Upload',
+        }, {
+          id: 1,
+          name: 'Clean',
+        }]} />
+      </S.Steps>
+  </S.App>
 );
 
 export default App;

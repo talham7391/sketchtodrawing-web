@@ -1,34 +1,35 @@
-import React from 'react';
-import { compose, withHandlers, withState } from 'recompose';
+import { compose, withState, withHandlers } from 'recompose';
 import App from './App';
-import * as CL from '../CanvasLibrary';
+import React from 'react';
 
 const enhancer = compose(
-  withState('imageSource', 'setImageSource', null),
+  withState('isCanvasNull', 'setIsCanvasNull', true),
   withState('canvasRef', 'setCanvasRef', React.createRef()),
+  withState('currentStep', 'setCurrentStep', 0),
   withHandlers({
-    onFileUpload: props => async evt => {
-      if (evt && evt.target && evt.target.files) {
-        const imgSrc = URL.createObjectURL(evt.target.files[0]);
-        const img = new Image;
-        img.src = imgSrc;
-
+    onUpload: props => async evt => {
+      if (evt.target.files.length === 1) {
+        const fileUrl = URL.createObjectURL(evt.target.files[0]);
+        const img = new Image();
+        img.src = fileUrl;
+        
         const imgload = new Promise((res, rej) => {
           img.onload = res;
         });
 
         await imgload;
-        
-        props.canvasRef.current.width = 500;
-        props.canvasRef.current.height = 600;
+
         const context = props.canvasRef.current.getContext('2d');
-        context.drawImage(img, 0, 0, props.canvasRef.current.width, props.canvasRef.current.height);
+        props.canvasRef.current.width = img.width;
+        props.canvasRef.current.height = img.height;
+        context.imageSmoothEnabled = false;
+        context.drawImage(img, 0, 0);
+
+        props.setIsCanvasNull(false);
+        props.setCurrentStep(props.currentStep + 1);
       }
     },
-    onAdaptiveThreshold: props => _ => {
-      CL.adaptiveThreshold(props.canvasRef.current);
-    },
-  })
+  }),
 );
 
 export default enhancer(App);
