@@ -29,11 +29,11 @@ function averageRGB (rgba) {
 }
 
 
-function getMean (pixelData, given_x, given_y, c) {
+function getMean (pixelData, givenX, givenY, blockSize, C) {
   const sum = [0, 0, 0, 0];
   let num = 0;
-  for (let y = given_y - c; y < given_y + c; y++) {
-    for (let x = given_x - c; x < given_x + c; x++) {
+  for (let y = givenY - blockSize; y < givenY + blockSize; y++) {
+    for (let x = givenX - blockSize; x < givenX + blockSize; x++) {
       if (0 <= x && x < pixelData.width && 0 <= y && y < pixelData.height) {
         const rgba = getRGBA(pixelData, x, y);
         sum[0] += rgba[0];
@@ -44,7 +44,7 @@ function getMean (pixelData, given_x, given_y, c) {
       }
     }
   }
-  return sum.map(x => x / num);
+  return sum.map(x => x / num - C);
 }
 
 
@@ -54,7 +54,7 @@ export function adaptiveThreshold(canvas) {
   const newPixelData = new ImageData(pixelData.width, pixelData.height);
   for (let y = 0; y < pixelData.height; y++) {
     for (let x = 0; x < pixelData.width; x++) {
-      const mean = averageRGB(getMean(pixelData, x, y, 5));
+      const mean = averageRGB(getMean(pixelData, x, y, 5, 11));
       if (averageRGB(getRGBA(pixelData, x, y)) >= mean) {
         setRGBA(newPixelData, x, y, [255, 255, 255, 255]);
       } else {
@@ -63,4 +63,65 @@ export function adaptiveThreshold(canvas) {
     }
   }
   context.putImageData(newPixelData, 0, 0);
+}
+
+
+export function blur(canvas, iterations) {
+  if (iterations === 0) {
+    return;
+  }
+  const context = canvas.getContext('2d');
+  const pixelData = context.getImageData(0, 0, canvas.width, canvas.height);
+  const newPixelData = new ImageData(pixelData.width, pixelData.height);
+  for (let y = 0; y < pixelData.height; y++) {
+    for (let x = 0; x < pixelData.width; x++) {
+      const mean = getMean(pixelData, x, y, 1, 0);
+      setRGBA(newPixelData, x, y, mean);
+    }
+  }
+  context.putImageData(newPixelData, 0, 0);
+  blur(canvas, iterations - 1);
+}
+
+
+export function erode(canvas, iterations) {
+  if (iterations === 0) {
+    return;
+  }
+  const context = canvas.getContext('2d');
+  const pixelData = context.getImageData(0, 0, canvas.width, canvas.height);
+  const newPixelData = new ImageData(pixelData.width, pixelData.height);
+  for (let y = 0; y < pixelData.height; y++) {
+    for (let x = 0; x < pixelData.width; x++) {
+      const mean = averageRGB(getMean(pixelData, x, y, 1, 0));
+      if (mean <= 5) {
+        setRGBA(newPixelData, x, y, [0, 0, 0, 255]);
+      } else {
+        setRGBA(newPixelData, x, y, [255, 255, 255, 255]);
+      }
+    }
+  }
+  context.putImageData(newPixelData, 0, 0);
+  erode(canvas, iterations - 1);
+}
+
+export function dilate(canvas, iterations) {
+  if (iterations === 0) {
+    return;
+  }
+  const context = canvas.getContext('2d');
+  const pixelData = context.getImageData(0, 0, canvas.width, canvas.height);
+  const newPixelData = new ImageData(pixelData.width, pixelData.height);
+  for (let y = 0; y < pixelData.height; y++) {
+    for (let x = 0; x < pixelData.width; x++) {
+      const mean = averageRGB(getMean(pixelData, x, y, 1, 0));
+      if (mean <= 250) {
+        setRGBA(newPixelData, x, y, [0, 0, 0, 255]);
+      } else {
+        setRGBA(newPixelData, x, y, [255, 255, 255, 255]);
+      }
+    }
+  }
+  context.putImageData(newPixelData, 0, 0);
+  dilate(canvas, iterations - 1);
 }

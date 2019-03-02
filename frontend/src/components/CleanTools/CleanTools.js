@@ -8,10 +8,10 @@ const CleanTools = props => (
     <S.Tool>
       <div>Extract Sketch</div>
       <div>Remove any light/shadows in the background.</div>
-      <StandardButton>Apply</StandardButton>
+      <StandardButton onClick={props.onExtractSketch}>Apply</StandardButton>
     </S.Tool>
     <S.Tool>
-      <div>Blur</div>
+      <div>Smooth</div>
       <div>Soften your lines.</div>
       <DiscreteSlider
         range={props.blurRange}

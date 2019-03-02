@@ -6,13 +6,17 @@ const enhancer = compose(
   withState('blurAmount', 'setBlurAmount', 0),
   withHandlers({
     onBlurIncrease: props => _ => {
-      if (props.blurAmount + 1 <= props.blurRange[1]) {
-        props.setBlurAmount(props.blurAmount + 1);
+      const newBlurAmount = props.blurAmount + 1;
+      if (newBlurAmount <= props.blurRange[1]) {
+        props.setBlurAmount(newBlurAmount);
+        props.onBlurChange(newBlurAmount);
       }
     },
     onBlurDecrease: props => _ => {
-      if (props.blurAmount - 1 >= props.blurRange[0]) {
-        props.setBlurAmount(props.blurAmount - 1);
+      const newBlurAmount = props.blurAmount - 1;
+      if (newBlurAmount >= props.blurRange[0]) {
+        props.setBlurAmount(newBlurAmount);
+        props.onBlurChange(newBlurAmount);
       }
     },
   }),
@@ -20,13 +24,17 @@ const enhancer = compose(
   withState('thicknessAmount', 'setThicknessAmount', 0),
   withHandlers({
     onThicknessIncrease: props => _ => {
-      if (props.thicknessAmount + 1 <= props.thicknessRange[1]) {
-        props.setThicknessAmount(props.thicknessAmount + 1);
+      const newThicknessAmount = props.thicknessAmount + 1;
+      if (newThicknessAmount <= props.thicknessRange[1]) {
+        props.setThicknessAmount(newThicknessAmount);
+        props.onThicknessChange(newThicknessAmount);
       }
     },
     onThicknessDecrease: props => _ => {
-      if (props.thicknessAmount - 1 >= props.thicknessRange[0]) {
-        props.setThicknessAmount(props.thicknessAmount - 1);
+      const newThicknessAmount = props.thicknessAmount - 1;
+      if (newThicknessAmount >= props.thicknessRange[0]) {
+        props.setThicknessAmount(newThicknessAmount);
+        props.onThicknessChange(newThicknessAmount);
       }
     },
   }),

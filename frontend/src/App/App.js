@@ -31,7 +31,10 @@ const App = props => (
     </S.MiddleContainer>
     <S.RightContainer>
       { props.currentStep === STEPS.CLEAN &&
-        <CleanTools />
+        <CleanTools
+          onExtractSketch={props.onExtractSketch}
+          onBlurChange={props.onBlurChange}
+          onThicknessChange={props.onThicknessChange} />
       }
     </S.RightContainer>
   </S.App>

@@ -2,11 +2,26 @@ import { compose, withState, withHandlers } from 'recompose';
 import App from './App';
 import React from 'react';
 import { STEPS } from './util.js';
+import * as CL from '../CanvasLibrary';
+
+function thickenThenBlur (canvas, blur, thickness) {
+  if (thickness > 0) {
+    CL.dilate(canvas, thickness);
+  } else if (thickness < 0) {
+    CL.erode(canvas, thickness * -1);
+  }
+  if (blur > 0) {
+    CL.blur(canvas, blur);
+  }
+}
 
 const enhancer = compose(
   withState('isCanvasNull', 'setIsCanvasNull', true),
   withState('canvasRef', 'setCanvasRef', React.createRef()),
   withState('currentStep', 'setCurrentStep', STEPS.UPLOAD),
+  withState('originalImageData', 'setOriginalImageData', null),
+  withState('blur', 'setBlur', 0),
+  withState('thickness', 'setThickness', 0),
   withHandlers({
     onUpload: props => async evt => {
       if (evt.target.files.length === 1) {
@@ -27,8 +42,26 @@ const enhancer = compose(
         context.drawImage(img, 0, 0);
 
         props.setIsCanvasNull(false);
+        props.setOriginalImageData(context.getImageData(0, 0, props.canvasRef.current.width, props.canvasRef.current.width));
         props.setCurrentStep(props.currentStep + 1);
       }
+    },
+    onExtractSketch: props => _ => {
+      CL.adaptiveThreshold(props.canvasRef.current);
+      const context = props.canvasRef.current.getContext('2d');
+      props.setOriginalImageData(context.getImageData(0, 0, props.canvasRef.current.width, props.canvasRef.current.width));
+    },
+    onBlurChange: props => val => {
+      const context = props.canvasRef.current.getContext('2d');
+      context.putImageData(props.originalImageData, 0, 0);
+      props.setBlur(val);
+      thickenThenBlur(props.canvasRef.current, val, props.thickness);
+    },
+    onThicknessChange: props => val => {
+      const context = props.canvasRef.current.getContext('2d');
+      context.putImageData(props.originalImageData, 0, 0);
+      props.setThickness(val);
+      thickenThenBlur(props.canvasRef.current, props.blur, val);
     },
   }),
 );
