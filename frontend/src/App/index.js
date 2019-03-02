@@ -1,11 +1,12 @@
 import { compose, withState, withHandlers } from 'recompose';
 import App from './App';
 import React from 'react';
+import { STEPS } from './util.js';
 
 const enhancer = compose(
   withState('isCanvasNull', 'setIsCanvasNull', true),
   withState('canvasRef', 'setCanvasRef', React.createRef()),
-  withState('currentStep', 'setCurrentStep', 0),
+  withState('currentStep', 'setCurrentStep', STEPS.UPLOAD),
   withHandlers({
     onUpload: props => async evt => {
       if (evt.target.files.length === 1) {
