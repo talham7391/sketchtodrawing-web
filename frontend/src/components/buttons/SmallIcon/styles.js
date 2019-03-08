@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import * as gs from '../../../styleConstants.js';
 
 export const SmallIcon = styled.div`
   display: inline-flex;
@@ -7,7 +8,7 @@ export const SmallIcon = styled.div`
   text-align: center;
   width: 22px;
   height: 22px;
-  background-color: #1c73ff;
+  background-color: ${props => props.isDisabled ? gs.DISABLED_GREY : gs.PRIMARY_BLUE};
   color: white;
   font-size: 16px;
   border-radius: 7px;
@@ -17,10 +18,10 @@ export const SmallIcon = styled.div`
   user-select: none;
 
   &:hover {
-    background-color: #0b48aa;
+    background-color: ${props => props.isDisabled ? gs.DISABLED_GREY : gs.HOVER_BLUE};
   }
 
   &:active {
-    background-color: #5495ff;
+    background-color: ${props => props.isDisabled ? gs.DISABLED_GREY : gs.ACTIVE_BLUE};
   }
 `;

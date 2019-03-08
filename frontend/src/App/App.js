@@ -32,6 +32,7 @@ const App = props => (
     <S.RightContainer>
       { props.currentStep === STEPS.CLEAN &&
         <CleanTools
+          isSketchExtracted={props.isSketchExtracted}
           onExtractSketch={props.onExtractSketch}
           onBlurChange={props.onBlurChange}
           onThicknessChange={props.onThicknessChange} />

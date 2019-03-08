@@ -1,7 +1,8 @@
 import styled from 'styled-components';
+import * as gs from '../../../styleConstants.js';
 
 export const StandardButton = styled.button`
-  background-color: #1c73ff;
+  background-color: ${props => props.isDisabled ? gs.DISABLED_GREY : gs.PRIMARY_BLUE};
   color: white;
   padding: 10px 12px;
   font-size: 16px;
@@ -9,12 +10,13 @@ export const StandardButton = styled.button`
   border: none;
   transition: 0.1s all;
   cursor: pointer;
+  pointer-events: ${props => props.isDisabled ? 'none' : 'all'}
 
   &:hover {
-    background-color: #0b48aa;
+    background-color: ${props => props.isDisabled ? gs.DISABLED_GREY : gs.HOVER_BLUE};
   }
 
   &:active {
-    background-color: #5495ff;
+    background-color: ${props => props.isDisabled ? gs.DISABLED_GREY : gs.ACTIVE_BLUE};
   }
 `;

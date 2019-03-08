@@ -22,6 +22,7 @@ const enhancer = compose(
   withState('originalImageData', 'setOriginalImageData', null),
   withState('blur', 'setBlur', 0),
   withState('thickness', 'setThickness', 0),
+  withState('isSketchExtracted', 'setIsSketchExtracted', false),
   withHandlers({
     onUpload: props => async evt => {
       if (evt.target.files.length === 1) {
@@ -50,6 +51,7 @@ const enhancer = compose(
       CL.adaptiveThreshold(props.canvasRef.current);
       const context = props.canvasRef.current.getContext('2d');
       props.setOriginalImageData(context.getImageData(0, 0, props.canvasRef.current.width, props.canvasRef.current.width));
+      props.setIsSketchExtracted(true);
     },
     onBlurChange: props => val => {
       const context = props.canvasRef.current.getContext('2d');
