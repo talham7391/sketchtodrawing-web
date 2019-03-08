@@ -1,4 +1,4 @@
-export const STEPS = {
+export const STAGES = {
   UPLOAD: 0,
-  CLEAN: 1,
+  DRAWING: 1,
 };

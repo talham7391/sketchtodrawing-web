@@ -1,43 +1,16 @@
 import React from 'react';
-import Steps from '../components/Steps';
-import UploadButton from '../components/buttons/UploadButton';
 import * as S from './styles.js'
-import { STEPS } from './util.js';
-import CleanTools from '../components/CleanTools';
+import ImageUpload from '../components/ImageUpload';
+import { STAGES } from './util.js';
 
 const App = props => (
   <S.App>
-    <S.MiddleContainer>
-      <S.CanvasContainer>
-        { props.isCanvasNull &&
-          <S.UploadImage>
-            <p>Start by uploading an image!</p>
-            <UploadButton onChange={props.onUpload}>Upload</UploadButton>
-          </S.UploadImage>
-        }
-        <S.Canvas show={!props.isCanvasNull} ref={props.canvasRef}></S.Canvas>
-      </S.CanvasContainer>
-      <S.Steps>
-        <Steps
-          currentStep={props.currentStep}
-          steps={[{
-            id: 0,
-            name: 'Upload',
-          }, {
-            id: 1,
-            name: 'Clean',
-          }]} />
-      </S.Steps>
-    </S.MiddleContainer>
-    <S.RightContainer>
-      { props.currentStep === STEPS.CLEAN &&
-        <CleanTools
-          isSketchExtracted={props.isSketchExtracted}
-          onExtractSketch={props.onExtractSketch}
-          onBlurChange={props.onBlurChange}
-          onThicknessChange={props.onThicknessChange} />
-      }
-    </S.RightContainer>
+    { props.stage === STAGES.UPLOAD &&
+      <ImageUpload onImageData={props.onImageData} />
+    }
+    { props.stage === STAGES.DRAWING &&
+      <div>You can start drawing now!</div>
+    }
   </S.App>
 );
 

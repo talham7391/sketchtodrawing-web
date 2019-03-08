@@ -8,7 +8,7 @@ export const SmallIcon = styled.div`
   text-align: center;
   width: 22px;
   height: 22px;
-  background-color: ${props => props.isDisabled ? gs.DISABLED_GREY : gs.PRIMARY_BLUE};
+  background-color: ${props => gs.getColor(props.type, gs.STATE.NORMAL, props.isDisabled)};
   color: white;
   font-size: 16px;
   border-radius: 7px;
@@ -18,10 +18,10 @@ export const SmallIcon = styled.div`
   user-select: none;
 
   &:hover {
-    background-color: ${props => props.isDisabled ? gs.DISABLED_GREY : gs.HOVER_BLUE};
+    background-color: ${props => gs.getColor(props.type, gs.STATE.HOVER, props.isDisabled)};
   }
 
   &:active {
-    background-color: ${props => props.isDisabled ? gs.DISABLED_GREY : gs.ACTIVE_BLUE};
+    background-color: ${props => gs.getColor(props.type, gs.STATE.ACTIVE, props.isDisabled)};
   }
 `;

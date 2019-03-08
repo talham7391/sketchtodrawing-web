@@ -18,7 +18,7 @@ export const Base = styled.div`
 `;
 
 export const Dot = styled.div`
-  background-color: ${props => props.isDisabled ? gs.DISABLED_GREY : gs.PRIMARY_BLUE};
+  background-color: ${props => props.isDisabled ? gs.DISABLED_COLOR : gs.PRIMARY_COLOR};
   width: 12px;
   height: 12px;
   border-radius: 100%;
