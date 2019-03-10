@@ -32,9 +32,11 @@ export function getColor(type, state, isDisabled) {
         return PRIMARY_ACTIVE_COLOR;
       case STATE.DISABLED:
         return DISABLED_COLOR;
+      default:
+        return null;
     }
   }
-  else if (type == TYPE.SECONDARY ) {
+  else if (type === TYPE.SECONDARY ) {
     switch (state) {
       case STATE.NORMAL:
         return SECONDARY_COLOR;
@@ -44,6 +46,8 @@ export function getColor(type, state, isDisabled) {
         return SECONDARY_ACTIVE_COLOR;
       case STATE.DISABLED:
         return DISABLED_COLOR;
+      default:
+        return null;
     }
   }
 }

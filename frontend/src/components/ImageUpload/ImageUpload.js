@@ -6,6 +6,7 @@ import StandardButton from '../buttons/StandardButton';
 import { STEPS } from './util.js';
 import CleanTools from '../CleanTools';
 import * as gs from '../../styleConstants.js';
+import Canvas from '../Canvas';
 
 const ImageUpload = props => (
   <S.ImageUpload>
@@ -17,7 +18,9 @@ const ImageUpload = props => (
             <UploadButton onChange={props.onUpload}>Upload</UploadButton>
           </S.UploadImage>
         }
-        <S.Canvas show={!props.isCanvasNull} ref={props.canvasRef}></S.Canvas>
+        <S.Canvas show={!props.isCanvasNull}>
+          <Canvas canvasRef={props.setCanvasRef} />
+        </S.Canvas>
       </S.CanvasContainer>
       <S.Steps>
         <Steps

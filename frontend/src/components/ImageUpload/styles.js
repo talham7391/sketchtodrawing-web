@@ -24,8 +24,10 @@ export const UploadImage = styled.div`
   }
 `;
 
-export const Canvas = styled.canvas`
+export const Canvas = styled.div`
   display: ${props => props.show ? 'block' : 'none'}
+  width: 100%;
+  height: 100%;
 `;
 
 export const Steps = styled.div`

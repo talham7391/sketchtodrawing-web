@@ -1,6 +1,5 @@
 import { compose, withState, withHandlers } from 'recompose';
 import ImageUpload from './ImageUpload';
-import React from 'react';
 import { STEPS } from './util.js';
 import * as CL from '../../CanvasLibrary';
 
@@ -17,7 +16,7 @@ function thickenThenBlur (canvas, blur, thickness) {
 
 const enhancer = compose(
   withState('isCanvasNull', 'setIsCanvasNull', true),
-  withState('canvasRef', 'setCanvasRef', React.createRef()),
+  withState('canvasRef', 'setCanvasRef', null),
   withState('currentStep', 'setCurrentStep', STEPS.UPLOAD),
   withState('originalImageData', 'setOriginalImageData', null),
   withState('blur', 'setBlur', 0),
@@ -36,37 +35,37 @@ const enhancer = compose(
 
         await imgload;
 
-        const context = props.canvasRef.current.getContext('2d');
-        props.canvasRef.current.width = img.width;
-        props.canvasRef.current.height = img.height;
+        const context = props.canvasRef.getContext('2d');
+        props.canvasRef.width = img.width;
+        props.canvasRef.height = img.height;
         context.imageSmoothEnabled = false;
         context.drawImage(img, 0, 0);
 
         props.setIsCanvasNull(false);
-        props.setOriginalImageData(context.getImageData(0, 0, props.canvasRef.current.width, props.canvasRef.current.width));
+        props.setOriginalImageData(context.getImageData(0, 0, props.canvasRef.width, props.canvasRef.width));
         props.setCurrentStep(props.currentStep + 1);
       }
     },
     onExtractSketch: props => _ => {
-      CL.adaptiveThreshold(props.canvasRef.current);
-      const context = props.canvasRef.current.getContext('2d');
-      props.setOriginalImageData(context.getImageData(0, 0, props.canvasRef.current.width, props.canvasRef.current.width));
+      CL.adaptiveThreshold(props.canvasRef);
+      const context = props.canvasRef.getContext('2d');
+      props.setOriginalImageData(context.getImageData(0, 0, props.canvasRef.width, props.canvasRef.width));
       props.setIsSketchExtracted(true);
     },
     onBlurChange: props => val => {
-      const context = props.canvasRef.current.getContext('2d');
+      const context = props.canvasRef.getContext('2d');
       context.putImageData(props.originalImageData, 0, 0);
       props.setBlur(val);
-      thickenThenBlur(props.canvasRef.current, val, props.thickness);
+      thickenThenBlur(props.canvasRef, val, props.thickness);
     },
     onThicknessChange: props => val => {
-      const context = props.canvasRef.current.getContext('2d');
+      const context = props.canvasRef.getContext('2d');
       context.putImageData(props.originalImageData, 0, 0);
       props.setThickness(val);
-      thickenThenBlur(props.canvasRef.current, props.blur, val);
+      thickenThenBlur(props.canvasRef, props.blur, val);
     },
     onStartDrawing: props => _ => {
-      const canvas = props.canvasRef.current;
+      const canvas = props.canvasRef;
       const context = canvas.getContext('2d');
       props.onImageData(context.getImageData(0, 0, canvas.width, canvas.height), canvas.width, canvas.height);
     },

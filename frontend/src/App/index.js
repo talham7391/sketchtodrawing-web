@@ -4,9 +4,11 @@ import { STAGES } from './util.js';
 
 const enhancer = compose(
   withState('stage', 'setStage', STAGES.UPLOAD),
+  withState('imageData', 'setImageData', null),
   withHandlers({
-    onImageData: props => _ => {
+    onImageData: props => imageData => {
       props.setStage(STAGES.DRAWING);
+      props.setImageData(imageData);
     },
   }),
 );
