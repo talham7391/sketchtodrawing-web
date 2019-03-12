@@ -12,7 +12,9 @@ const enhancer = compose(
   withHandlers({
     onImageData: props => imageData => {
       props.setStage(STAGES.DRAWING);
-      props.layersState.addLayer(imageData, 'New Layer');
+      if (imageData) {
+        props.layersState.addLayer(imageData, 'New Layer');
+      }
     },
   }),
 );

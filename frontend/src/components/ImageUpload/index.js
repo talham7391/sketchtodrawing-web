@@ -65,9 +65,13 @@ const enhancer = compose(
       thickenThenBlur(props.canvasRef, props.blur, val);
     },
     onStartDrawing: props => _ => {
-      const canvas = props.canvasRef;
-      const context = canvas.getContext('2d');
-      props.onImageData(context.getImageData(0, 0, canvas.width, canvas.height), canvas.width, canvas.height);
+      if (props.isCanvasNull) {
+        props.onImageData(null);
+      } else {
+        const canvas = props.canvasRef;
+        const context = canvas.getContext('2d');
+        props.onImageData(context.getImageData(0, 0, canvas.width, canvas.height));
+      }
     },
   }),
 );

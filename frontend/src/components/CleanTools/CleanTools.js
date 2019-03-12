@@ -8,13 +8,15 @@ const CleanTools = props => (
     <S.Tool>
       <div>Extract Sketch</div>
       <div>Remove any light/shadows in the background.</div>
-      <StandardButton onClick={props.onExtractSketch} isDisabled={props.isSketchExtracted}>Apply</StandardButton>
+      <StandardButton
+        onClick={props.onExtractSketch}
+        isDisabled={props.isDisabled || props.isSketchExtracted}>Apply</StandardButton>
     </S.Tool>
     <S.Tool>
       <div>Smooth</div>
       <div>Soften your lines.</div>
       <DiscreteSlider
-        isDisabled={!props.isSketchExtracted}
+        isDisabled={props.isDisabled || !props.isSketchExtracted}
         range={props.blurRange}
         currentValue={props.blurAmount}
         onIncrease={props.onBlurIncrease}
@@ -24,7 +26,7 @@ const CleanTools = props => (
       <div>Thickness</div>
       <div>Control the thickness of your lines.</div>
       <DiscreteSlider
-        isDisabled={!props.isSketchExtracted}
+        isDisabled={props.isDisabled || !props.isSketchExtracted}
         range={props.thicknessRange}
         currentValue={props.thicknessAmount}
         onIncrease={props.onThicknessIncrease}

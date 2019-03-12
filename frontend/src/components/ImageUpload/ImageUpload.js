@@ -35,16 +35,17 @@ const ImageUpload = props => (
       </S.Steps>
     </S.MiddleContainer>
     <S.RightContainer>
-      { props.currentStep === STEPS.CLEAN &&
-        <Fragment>
-          <CleanTools
-            isSketchExtracted={props.isSketchExtracted}
-            onExtractSketch={props.onExtractSketch}
-            onBlurChange={props.onBlurChange}
-            onThicknessChange={props.onThicknessChange} />
-          <StandardButton type={gs.TYPE.SECONDARY} onClick={props.onStartDrawing}>Start Drawing</StandardButton>
-        </Fragment>
-      }
+      <CleanTools
+        isDisabled={props.currentStep === STEPS.UPLOAD}
+        isSketchExtracted={props.isSketchExtracted}
+        onExtractSketch={props.onExtractSketch}
+        onBlurChange={props.onBlurChange}
+        onThicknessChange={props.onThicknessChange} />
+      <StandardButton
+        type={gs.TYPE.SECONDARY}
+        onClick={props.onStartDrawing} >
+        { props.currentStep === STEPS.UPLOAD ? 'Skip Upload' : 'Start Drawing'}
+      </StandardButton>
     </S.RightContainer>
   </S.ImageUpload>
 );

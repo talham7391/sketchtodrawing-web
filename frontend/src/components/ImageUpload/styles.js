@@ -47,7 +47,7 @@ export const MiddleContainer = styled.div`
 
 export const RightContainer = styled.div`
   background-color: white;
-  width: 300px;
+  width: 25%;
   padding: 14px 20px;
   display: grid;
   grid-template-rows: 1fr auto;
