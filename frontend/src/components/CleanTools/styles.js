@@ -12,12 +12,11 @@ export const Tool = styled.div`
 
   > :first-child {
     font-weight: bold;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
   }
 
   > *:nth-child(2) {
-    font-size: 14px;
-    opacity: 0.7;
+    font-size: 16px;
     margin-bottom: 16px;
   }
 `;

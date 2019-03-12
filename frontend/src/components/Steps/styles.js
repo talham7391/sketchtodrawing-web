@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Steps = styled.div`
   display: flex;
   > *:not(:first-child) {
-    margin-left: 40px;
+    margin-left: 30px;
   }
 `;
 
@@ -14,8 +14,8 @@ export const Step = styled.div`
 `;
 
 export const Dot = styled.div`
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   background-color: ${props => props.active ? '#1c73ff' : 'black'};
   opacity: ${props => props.active ? 1 : 0.2};
   transform: scale(${props => props.active ? 1 : 0.5});
@@ -26,4 +26,6 @@ export const Dot = styled.div`
 export const Name = styled.div`
   color: ${props => props.active ? '#1c73ff' : 'black'};
   opacity: ${props => props.active ? 1 : 0.2};
+  font-size: 16px;
+  font-weight: 600;
 `;

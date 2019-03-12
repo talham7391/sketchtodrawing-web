@@ -1,7 +1,7 @@
 
-export const PRIMARY_COLOR = '#1c73ff';
-export const PRIMARY_HOVER_COLOR = '#0b48aa';
-export const PRIMARY_ACTIVE_COLOR = '#5495ff';
+export const PRIMARY_COLOR = '#369df5';
+export const PRIMARY_HOVER_COLOR = '#6abaff';
+export const PRIMARY_ACTIVE_COLOR = '#3b69b5';
 export const DISABLED_COLOR = '#e4e4e4';
 export const SECONDARY_COLOR = '#ffac30';
 export const SECONDARY_HOVER_COLOR = '#d47f00';

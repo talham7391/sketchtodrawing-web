@@ -8,8 +8,33 @@ body {
   background-color: #efefef;
   padding: 0px;
   margin: 0px;
+  -webkit-font-smoothing: antialiased;
+  font-family: 'Nunito';
+  font-size: 18px;
+  opacity: 0.8;
 }
 
 p {
   margin: 0px;
+}
+
+@font-face {
+  font-family: 'Nunito';
+  font-weight: 300;
+  src: url('/fonts/Nunito/Nunito-Light.ttf');
+}
+@font-face {
+  font-family: 'Nunito';
+  font-weight: 400;
+  src: url('/fonts/Nunito/Nunito-Regular.ttf');
+}
+@font-face {
+  font-family: 'Nunito';
+  font-weight: 600;
+  src: url('/fonts/Nunito/Nunito-SemiBold.ttf');
+}
+@font-face {
+  font-family: 'Nunito';
+  font-weight: 700;
+  src: url('/fonts/Nunito/Nunito-Bold.ttf');
 }
