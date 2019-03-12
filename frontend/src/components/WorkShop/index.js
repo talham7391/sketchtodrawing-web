@@ -1,26 +1,12 @@
-import { compose, withState, withPropsOnChange, withProps, withHandlers } from 'recompose';
+import { compose, withProps, withHandlers } from 'recompose';
 import WorkShop from './WorkShop';
-import AppState from '../../AppState';
-
-const TOOLS = {
-  BRUSH: 0,
-  ERASER: 1,
-};
+import AppState, { LayersState, TOOLS } from '../../AppState';
 
 const enhancer = compose(
   withProps(_ => ({
     appState: AppState,
+    layersState: LayersState,
   })),
-  withState('selectedTool', 'setSelectedTool', null),
-  withPropsOnChange(['canvasRef'], props => {
-    // if (props.canvasRef && props.imageData) {
-    //   const context = props.canvasRef.getContext('2d');
-    //   props.canvasRef.width = props.imageData.width;
-    //   props.canvasRef.height = props.imageData.height;
-    //   context.imageSmoothEnabled = false;
-    //   context.putImageData(props.imageData, 0, 0);
-    // }
-  }),
   withProps(props => ({
     tools: [{
       id: TOOLS.BRUSH,
@@ -32,7 +18,7 @@ const enhancer = compose(
   })),
   withHandlers({
     onToolSelect: props => id => {
-      props.setSelectedTool(id);
+      props.appState.selectedTool = id;
     },
   }),
 );

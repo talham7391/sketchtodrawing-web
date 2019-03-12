@@ -5,7 +5,7 @@ import _ from 'lodash';
 const Layers = props => (
   <S.Layers>
     { _.map(props.layers, layer => (
-      <S.Layer>
+      <S.Layer key={layer.zIndex}>
         {layer.name}
       </S.Layer>
     )) }
