@@ -5,6 +5,6 @@ export const App = styled.div`
   display: flex;
 
   > * {
-    flex-grow: 1
+    flex-grow: 1;
   }
 `;
