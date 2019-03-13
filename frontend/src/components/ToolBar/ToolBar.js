@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import * as S from './styles.js';
 import _ from 'lodash';
+import Tool from '../Tool';
 
 const ToolBar = props => (
   <S.ToolBar>
@@ -8,28 +9,11 @@ const ToolBar = props => (
       <Tool
         key={tool.id}
         id={tool.id}
-        name={tool.name}
-        selectedTool={props.selectedTool}
-        onToolSelect={props.onToolSelect} />
+        iconSrc={tool.iconSrc}
+        selected={props.selectedTool === tool.id}
+        onClick={props.onToolSelect} />
     ) }
   </S.ToolBar>
 );
-
-class Tool extends Component {
-  constructor (props) {
-    super(props);
-    this.onToolSelect = _ => props.onToolSelect(props.id);
-  }
-  
-  render () {
-    return (
-      <S.Tool
-        selected={this.props.selectedTool === this.props.id}
-        onClick={this.onToolSelect}>
-        {this.props.name}
-      </S.Tool>
-    )
-  }
-}
 
 export default ToolBar;

@@ -2,7 +2,8 @@ import styled from 'styled-components';
 
 export const ImageUpload = styled.div`
   height: 100vh;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 30%;
 `;
 
 export const CanvasContainer = styled.div`
@@ -42,12 +43,10 @@ export const MiddleContainer = styled.div`
   display: grid;
   grid-template-rows: 1fr auto;
   height: 100%;
-  flex-grow: 1;
 `;
 
 export const RightContainer = styled.div`
   background-color: white;
-  width: 25%;
   padding: 14px 20px;
   display: grid;
   grid-template-rows: 1fr auto;

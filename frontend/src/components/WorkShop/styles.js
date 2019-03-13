@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const WorkShop = styled.div`
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr 30%;
 `;
 
 export const Center = styled.div`
@@ -11,6 +11,12 @@ export const Center = styled.div`
 `;
 
 export const Right = styled.div`
-  width: 300px;
   background-color: white;
+  padding: 14px 20px;
+  display: flex;
+  flex-direction: column;
+`;
+
+export const Layers = styled.div`
+  margin-top: 20px;
 `;

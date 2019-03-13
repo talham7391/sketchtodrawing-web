@@ -10,15 +10,18 @@ const enhancer = compose(
   withProps(props => ({
     tools: [{
       id: TOOLS.BRUSH,
-      name: "Brush",
+      iconSrc: '/images/icons/brush.png',
     }, {
       id: TOOLS.ERASER,
-      name: "Eraser",
+      iconSrc: '/images/icons/eraser.png',
     }],
   })),
   withHandlers({
     onToolSelect: props => id => {
       props.appState.selectedTool = id;
+    },
+    onNewLayer: props => _ => {
+      props.layersState.newLayer();
     },
   }),
 );

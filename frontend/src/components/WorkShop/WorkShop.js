@@ -4,6 +4,7 @@ import ToolBar from '../ToolBar';
 import LayeredCanvas from '../LayeredCanvas';
 import Layers from '../Layers';
 import { observer } from 'mobx-react';
+import StandardButton from '../buttons/StandardButton';
 
 const WorkShop = observer(props => (
   <S.WorkShop>
@@ -15,7 +16,8 @@ const WorkShop = observer(props => (
       <LayeredCanvas layers={props.layersState.layers}/>
     </S.Center>
     <S.Right>
-      <Layers layers={props.layersState.layers}/>
+      <StandardButton onClick={props.onNewLayer}>New Layer</StandardButton>
+      <S.Layers><Layers layers={props.layersState.layers}/></S.Layers>
     </S.Right>
   </S.WorkShop>
 ));

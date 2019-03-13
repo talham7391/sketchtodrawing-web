@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import * as S from './styles.js'
 import Steps from '../Steps';
 import UploadButton from '../buttons/UploadButton';

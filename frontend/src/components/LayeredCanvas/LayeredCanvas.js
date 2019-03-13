@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import * as S from './styles.js'
 import _ from 'lodash';
+import { observer } from 'mobx-react';
 
-const LayeredCanvas = props => (
+const LayeredCanvas = observer(props => (
   <S.LayeredCanvas
     onWheel={props.onWheel}
     onMouseDown={props.onMouseDown}
@@ -17,7 +18,7 @@ const LayeredCanvas = props => (
         translateY={props.translateY} />
     )) }
   </S.LayeredCanvas>
-);
+));
 
 class CustomCanvas extends Component {
   constructor (props) {
