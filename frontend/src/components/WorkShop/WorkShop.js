@@ -14,7 +14,12 @@ const WorkShop = observer(props => (
         tools={props.tools}
         onToolSelect={props.onToolSelect}
         selectedTool={props.appState.selectedTool} />
-      <LayeredCanvas layers={props.layersState.layers}/>
+      <LayeredCanvas
+        selectedLayer={props.appState.selectedLayer}
+        layers={props.layersState.layers}
+        onCanvasMouseUp={props.onLayeredCanvasMouseUp}
+        onCanvasMouseDown={props.onLayeredCanvasMouseDown}
+        onCanvasDraw={props.onLayeredCanvasDraw} />
     </S.Center>
     <S.Right>
       <StandardButton type={gs.TYPE.BASIC} onClick={props.onNewLayer}>New Layer</StandardButton>

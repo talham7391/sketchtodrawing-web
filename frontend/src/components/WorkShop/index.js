@@ -32,6 +32,9 @@ const enhancer = compose(
       }
       props.layersState.deleteLayer(zIndex);
     },
+    onLayeredCanvasMouseDown: props => _ => console.log('down'),
+    onLayeredCanvasMouseUp: props => _ => console.log('up'),
+    onLayeredCanvasDraw: props => _ => console.log('draw'),
   }),
 );
 

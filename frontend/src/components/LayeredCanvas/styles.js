@@ -17,4 +17,5 @@ export const Canvas = styled.canvas.attrs(props => ({
   top: 50%;
   left: 50%;
   z-index: ${props => props.zIndex};
+  pointer-events: ${props => props.selected ? 'all' : 'none'};
 `;
