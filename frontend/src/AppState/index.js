@@ -1,5 +1,6 @@
 import { observable, action } from 'mobx';
 import _ from 'lodash';
+import uuid from 'uuid/v1';
 
 export const TOOLS = {
   BRUSH: 0,
@@ -19,6 +20,7 @@ export const LayersState = observable({
 
   addLayer (imageData, name) {
     this.layers.push({
+      id: uuid(),
       zIndex: this.layers.length,
       imageData,
       name,
@@ -39,13 +41,16 @@ export const LayersState = observable({
     this.addLayer(imgd, `New Layer ${this.layers.length + 1}`);
   },
 
-  deleteLayer (zIndex) {
-    _.remove(this.layers, layer => layer.zIndex === zIndex);
-    _.each(this.layers, layer => {
-      if (layer.zIndex > zIndex) {
-        layer.zIndex -= 1;
-      }
-    });
+  deleteLayer (id) {
+    const l = _.find(this.layers, layer => layer.id === id);
+    if (l) {
+      _.remove(this.layers, layer => layer.id === id);
+      _.each(this.layers, layer => {
+        if (layer.zIndex > l.zIndex) {
+          layer.zIndex -= 1;
+        }
+      });
+    }
   },
 
 }, {

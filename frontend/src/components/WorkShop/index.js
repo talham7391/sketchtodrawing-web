@@ -23,18 +23,24 @@ const enhancer = compose(
     onNewLayer: props => _ => {
       props.layersState.newLayer();
     },
-    onLayerClick: props => zIndex => {
-      props.appState.selectedLayer = props.appState.selectedLayer === zIndex ? null : zIndex;
+    onLayerClick: props => id => {
+      props.appState.selectedLayer = props.appState.selectedLayer === id ? null : id;
     },
-    onLayerDelete: props => zIndex => {
-      if (props.appState.selectedLayer === zIndex) {
+    onLayerDelete: props => id => {
+      if (props.appState.selectedLayer === id) {
         props.appState.selectedLayer = null;
       }
-      props.layersState.deleteLayer(zIndex);
+      props.layersState.deleteLayer(id);
     },
-    onLayeredCanvasMouseDown: props => _ => console.log('down'),
-    onLayeredCanvasMouseUp: props => _ => console.log('up'),
-    onLayeredCanvasDraw: props => _ => console.log('draw'),
+    onLayeredCanvasMouseDown: props => evt => {
+      
+    },
+    onLayeredCanvasMouseUp: props => evt => {
+      
+    },
+    onLayeredCanvasDraw: props => (canvas, id, percentageFromTop, percentageFromBottom) => {
+      
+    },
   }),
 );
 

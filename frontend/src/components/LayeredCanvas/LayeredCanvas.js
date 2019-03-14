@@ -7,7 +7,7 @@ const LayeredCanvas = observer(props => (
   <S.LayeredCanvas onWheel={props.onWheel} >
     { _.map(props.layers, layer => (
       <CustomCanvas
-        key={layer.zIndex}
+        key={layer.id}
         layer={layer}
         scale={props.scale}
         translateX={props.translateX}
@@ -15,7 +15,7 @@ const LayeredCanvas = observer(props => (
         onCanvasMouseDown={props.onCanvasMouseDown}
         onCanvasMouseUp={props.onCanvasMouseUp}
         onCanvasDraw={props.onCanvasDraw}
-        selected={props.selectedLayer === layer.zIndex} />
+        selected={props.selectedLayer === layer.id} />
     )) }
   </S.LayeredCanvas>
 ));
@@ -55,7 +55,7 @@ class CustomCanvas extends Component {
           const distanceFromTop = evt.clientY - cr.top;
           const percentageFromLeft = distanceFromLeft / cr.width;
           const percentageFromTop = distanceFromTop / cr.height;
-          this.props.onCanvasDraw && this.props.onCanvasDraw(canvas, percentageFromLeft, percentageFromTop);
+          this.props.onCanvasDraw && this.props.onCanvasDraw(canvas, this.props.layer.id, percentageFromLeft, percentageFromTop);
         }
       }
     };
