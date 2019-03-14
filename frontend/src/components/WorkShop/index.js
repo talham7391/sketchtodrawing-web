@@ -18,10 +18,19 @@ const enhancer = compose(
   })),
   withHandlers({
     onToolSelect: props => id => {
-      props.appState.selectedTool = id;
+      props.appState.selectedTool = props.appState.selectedTool === id ? null : id;
     },
     onNewLayer: props => _ => {
       props.layersState.newLayer();
+    },
+    onLayerClick: props => zIndex => {
+      props.appState.selectedLayer = props.appState.selectedLayer === zIndex ? null : zIndex;
+    },
+    onLayerDelete: props => zIndex => {
+      if (props.appState.selectedLayer === zIndex) {
+        props.appState.selectedLayer = null;
+      }
+      props.layersState.deleteLayer(zIndex);
     },
   }),
 );

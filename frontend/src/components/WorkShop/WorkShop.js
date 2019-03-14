@@ -5,6 +5,7 @@ import LayeredCanvas from '../LayeredCanvas';
 import Layers from '../Layers';
 import { observer } from 'mobx-react';
 import StandardButton from '../buttons/StandardButton';
+import * as gs from '../../styleConstants.js';
 
 const WorkShop = observer(props => (
   <S.WorkShop>
@@ -16,8 +17,14 @@ const WorkShop = observer(props => (
       <LayeredCanvas layers={props.layersState.layers}/>
     </S.Center>
     <S.Right>
-      <StandardButton onClick={props.onNewLayer}>New Layer</StandardButton>
-      <S.Layers><Layers layers={props.layersState.layers}/></S.Layers>
+      <StandardButton type={gs.TYPE.BASIC} onClick={props.onNewLayer}>New Layer</StandardButton>
+      <S.Layers>
+        <Layers
+          selectedLayer={props.appState.selectedLayer}
+          layers={props.layersState.layers}
+          onLayerClick={props.onLayerClick}
+          onLayerDelete={props.onLayerDelete} />
+      </S.Layers>
     </S.Right>
   </S.WorkShop>
 ));

@@ -25,3 +25,19 @@ export const SmallIcon = styled.div`
     background-color: ${props => gs.getColor(props.type, gs.STATE.ACTIVE, props.isDisabled)};
   }
 `;
+
+export const JustIcon = styled.div`
+  opacity: 0.2;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  > img {
+    width: 16px;
+  }
+`;

@@ -3,7 +3,7 @@ import * as gs from '../../../styleConstants.js';
 
 export const StandardButton = styled.button`
   background-color: ${props => gs.getColor(props.type, gs.STATE.NORMAL, props.isDisabled)};
-  color: white;
+  color: ${props => gs.getTextColor(props.type, gs.STATE.NORMAL, props.isDisabled)};
   padding: 10px 20px;
   font-size: 14px;
   font-weight: 600;
