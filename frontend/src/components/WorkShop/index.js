@@ -1,6 +1,7 @@
 import { compose, withProps, withHandlers } from 'recompose';
 import WorkShop from './WorkShop';
 import AppState, { LayersState, TOOLS } from '../../AppState';
+import * as CL from '../../CanvasLibrary';
 
 const enhancer = compose(
   withProps(_ => ({
@@ -38,8 +39,8 @@ const enhancer = compose(
     onLayeredCanvasMouseUp: props => evt => {
       
     },
-    onLayeredCanvasDraw: props => (canvas, id, percentageFromTop, percentageFromBottom) => {
-      
+    onLayeredCanvasDraw: props => (canvas, id, percentageFromLeft, percentageFromTop) => {
+      CL.draw(props.appState, canvas, percentageFromLeft, percentageFromTop);
     },
   }),
 );

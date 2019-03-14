@@ -125,3 +125,11 @@ export function dilate(canvas, iterations) {
   context.putImageData(newPixelData, 0, 0);
   dilate(canvas, iterations - 1);
 }
+
+export function draw(settings, canvas, percentageFromLeft, percentageFromTop) {
+  const context = canvas.getContext('2d');
+  context.fillStyle = '#000000';
+  context.beginPath();
+  context.arc(percentageFromLeft * canvas.width, percentageFromTop * canvas.height, 10, 0, 2 * Math.PI);
+  context.fill();
+}
