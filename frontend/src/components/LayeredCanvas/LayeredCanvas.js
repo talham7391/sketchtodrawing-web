@@ -36,33 +36,48 @@ class CustomCanvas extends Component {
       }
     };
 
+    this.callFuncWithInfo = (evt, func) => {
+      const canvas = this.canvasRef.current;
+      if (canvas) {
+        const cr = canvas.getBoundingClientRect();
+        const distanceFromLeft = evt.clientX - cr.left;
+        const distanceFromTop = evt.clientY - cr.top;
+        const percentageFromLeft = distanceFromLeft / cr.width;
+        const percentageFromTop = distanceFromTop / cr.height;
+        func(canvas, this.props.layer.id, percentageFromLeft, percentageFromTop);
+      }
+    };
+
     this.onMouseDown = evt => {
-      this.mouseDown = true;
-      this.props.onCanvasMouseDown && this.props.onCanvasMouseDown(evt);
+      if (this.props.selected) {
+        this.mouseDown = true;
+        this.props.onCanvasMouseDown && this.callFuncWithInfo(evt, this.props.onCanvasMouseDown);
+      }
     };
 
     this.onMouseUp = evt => {
-      this.mouseDown = false;
-      this.props.onCanvasMouseUp && this.props.onCanvasMouseUp(evt);
+      if (this.props.selected) {
+        this.mouseDown = false;
+        this.props.onCanvasMouseUp && this.callFuncWithInfo(evt, this.props.onCanvasMouseUp);
+      }
     };
 
     this.onMouseMove = evt => {
-      if (this.mouseDown) {
-        const canvas = this.canvasRef.current;
-        if (canvas) {
-          const cr = canvas.getBoundingClientRect();
-          const distanceFromLeft = evt.clientX - cr.left;
-          const distanceFromTop = evt.clientY - cr.top;
-          const percentageFromLeft = distanceFromLeft / cr.width;
-          const percentageFromTop = distanceFromTop / cr.height;
-          this.props.onCanvasDraw && this.props.onCanvasDraw(canvas, this.props.layer.id, percentageFromLeft, percentageFromTop);
-        }
+      if (this.props.selected && this.mouseDown) {
+        this.props.onCanvasDraw && this.callFuncWithInfo(evt, this.props.onCanvasDraw);
       }
     };
   }
 
   componentDidMount () {
     this.renderImageData();
+    document.addEventListener('mouseup', this.onMouseUp);
+    document.addEventListener('mousedown', this.onMouseDown);
+  }
+
+  componentWillUnmount () {
+    document.removeEventListener('mouseup', this.onMouseUp);
+    document.removeEventListener('mousedown', this.onMouseDown);
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -82,8 +97,6 @@ class CustomCanvas extends Component {
         scale={this.props.scale}
         translateX={this.props.translateX}
         translateY={this.props.translateY}
-        onMouseDown={this.onMouseDown}
-        onMouseUp={this.onMouseUp}
         onMouseMove={this.onMouseMove} >
       </S.Canvas>
     );

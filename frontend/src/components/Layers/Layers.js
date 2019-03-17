@@ -22,6 +22,7 @@ class Layer extends Component {
     super(props);
 
     this.onClick = _ => this.props.onClick && this.props.onClick(this.props.layer.id);
+
     this.onDelete = evt => {
       evt.stopPropagation();
       this.props.onDelete && this.props.onDelete(this.props.layer.id);
@@ -31,19 +32,20 @@ class Layer extends Component {
   render () {
     return (
       <S.Layer selected={this.props.selected} onClick={this.onClick}>
-        <CustomCanvas
+        <EnhancedCustomCanvas
           layer={this.props.layer} />
         <p>{this.props.layer.name}</p>
-        <SmallIcon justIcon onClick={this.onDelete}><img src="/images/icons/trash.png" /></SmallIcon>
+        <SmallIcon justIcon onClick={this.onDelete}><img src="/images/icons/trash.png" alt="Delete layer." /></SmallIcon>
       </S.Layer>
     );
   }
-}
+};
 
 class CustomCanvas extends Component {
   constructor (props) {
     super(props);
     this.canvasRef = React.createRef();
+
     this.renderImageData = _ => {
       const canvas = this.canvasRef.current;
       if (canvas) {
@@ -72,6 +74,11 @@ class CustomCanvas extends Component {
       <canvas ref={this.canvasRef}></canvas>
     );
   }
-}
+};
+
+const EnhancedCustomCanvas = observer(props => {
+  _ = props.layer.dirty; // we need to dereference this property so that if it changes we rerender
+  return <CustomCanvas {...props}/>
+});
 
 export default Layers;

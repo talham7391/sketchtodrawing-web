@@ -33,11 +33,12 @@ const enhancer = compose(
       }
       props.layersState.deleteLayer(id);
     },
-    onLayeredCanvasMouseDown: props => evt => {
-      
+    onLayeredCanvasMouseDown: props => (canvas, id, percentageFromLeft, percentageFromTop) => {
+      CL.setContext(props.appState, canvas, percentageFromLeft, percentageFromTop);
     },
-    onLayeredCanvasMouseUp: props => evt => {
-      
+    onLayeredCanvasMouseUp: props => (canvas, id, percentageFromLeft, percentageFromTop) => {
+      CL.commitDraw();
+      props.layersState.updateLayerImageData(id, CL.getImageData(canvas));
     },
     onLayeredCanvasDraw: props => (canvas, id, percentageFromLeft, percentageFromTop) => {
       CL.draw(props.appState, canvas, percentageFromLeft, percentageFromTop);

@@ -1,4 +1,5 @@
-
+import { TOOLS } from '../AppState';
+import _ from 'lodash';
 
 // function getMean(pixelData, x, y, ) {
 
@@ -126,10 +127,94 @@ export function dilate(canvas, iterations) {
   dilate(canvas, iterations - 1);
 }
 
+
+const drawingContext = {
+  tool: null,
+  startedAt: null,
+  originalImageData: null,
+  pathDrawn: [],
+};
+
+
+export function setContext(settings, canvas, percentageFromLeft, percentageFromTop) {
+  drawingContext.tool = settings.selectedTool;
+  drawingContext.startedAt = {
+    x: percentageFromLeft * canvas.width,
+    y: percentageFromTop * canvas.height,
+  };
+  const context = canvas.getContext('2d');
+  drawingContext.originalImageData = context.getImageData(0, 0, canvas.width, canvas.height);
+
+  if (drawingContext.tool === TOOLS.BRUSH) {
+    context.fillStyle = '#000000';
+  }
+}
+
+
+export function commitDraw() {
+  drawingContext.tool = null;
+  drawingContext.startedAt = null;
+  drawingContext.originalImageData = null;
+  drawingContext.pathDrawn = [];
+}
+
+
+export function getImageData(canvas) {
+  const context = canvas.getContext('2d');
+  return context.getImageData(0, 0, canvas.width, canvas.height);
+}
+
+
 export function draw(settings, canvas, percentageFromLeft, percentageFromTop) {
   const context = canvas.getContext('2d');
-  context.fillStyle = '#000000';
-  context.beginPath();
-  context.arc(percentageFromLeft * canvas.width, percentageFromTop * canvas.height, 10, 0, 2 * Math.PI);
-  context.fill();
+
+  const enterpolatedDraw = drawFunc => {
+    const previousPoint = _.last(drawingContext.pathDrawn);
+    if (previousPoint) {
+      const distance = Math.sqrt(
+        Math.pow(percentageFromLeft - previousPoint.percentageFromLeft, 2)
+        + 
+        Math.pow(percentageFromTop - previousPoint.percentageFromTop, 2)
+      );
+      
+      const JUMP = 0.01;
+
+      for (let i = JUMP; i < distance; i += JUMP) {
+        const p = i / distance;
+        const pfl = percentageFromLeft - (percentageFromLeft - previousPoint.percentageFromLeft) * p;
+        const pft = percentageFromTop - (percentageFromTop - previousPoint.percentageFromTop) * p;
+        drawFunc(pfl, pft, false);
+      }
+      drawFunc(percentageFromLeft, percentageFromTop);
+    } else {
+      drawFunc(percentageFromLeft, percentageFromTop);
+    }
+  };
+
+  if (drawingContext.tool === TOOLS.BRUSH) {
+    const paintArc = (l, t, pushToPath = true) => {
+      context.beginPath();
+      context.arc(canvas.width * l, canvas.height * t, 10, 0, 2 * Math.PI);
+      context.fill();
+      context.closePath();
+      if (pushToPath) {
+        drawingContext.pathDrawn.push({percentageFromLeft: l, percentageFromTop: t});
+      }
+    };
+    enterpolatedDraw(paintArc);
+  } else if (drawingContext.tool === TOOLS.ERASER) {
+    const eraseArc = (l, t, pushToPath = true) => {
+      context.save();
+      context.beginPath();
+      context.arc(canvas.width * l, canvas.height * t, 10, 0, 2 * Math.PI);
+      context.clip();
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      context.closePath();
+      context.restore();
+      if (pushToPath) {
+        drawingContext.pathDrawn.push({percentageFromLeft: l, percentageFromTop: t});
+      }
+    };
+    enterpolatedDraw(eraseArc);
+  }
 }

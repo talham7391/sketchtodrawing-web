@@ -53,8 +53,22 @@ export const LayersState = observable({
     }
   },
 
+  updateLayerImageData (id, imageData) {
+    for (let i = 0; i < this.layers.length; i++) {
+      if (this.layers[i].id === id) {
+        this.layers[i].imageData = imageData;
+        this.layers[i].dirty = {
+          display: this.layers[i].dirty.display,
+          layers: true,
+        };
+        break;
+      }
+    }
+  },
+
 }, {
   addLayer: action,
   newLayer: action,
   deleteLayer: action,
+  updateLayerImageData: action,
 })
