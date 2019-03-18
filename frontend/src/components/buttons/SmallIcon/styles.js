@@ -15,6 +15,7 @@ export const SmallIcon = styled.div`
   border: none;
   transition: 0.1s all;
   cursor: pointer;
+  pointer-events: ${props => props.isDisabled ? 'none' : 'all'};
   user-select: none;
 
   &:hover {

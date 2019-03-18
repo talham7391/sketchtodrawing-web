@@ -10,6 +10,7 @@ export const TOOLS = {
 
 const AppState = observable({
   selectedTool: null,
+  selectedToolProperties: null,
   selectedLayer: null,
 });
 export default AppState;

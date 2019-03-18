@@ -1,6 +1,6 @@
 import React from 'react';
 import * as S from './styles.js'
-import ToolBar from '../ToolBar';
+import ToolBox from '../ToolBox';
 import LayeredCanvas from '../LayeredCanvas';
 import Layers from '../Layers';
 import { observer } from 'mobx-react';
@@ -9,11 +9,25 @@ import * as gs from '../../styleConstants.js';
 
 const WorkShop = observer(props => (
   <S.WorkShop>
-    <S.Center>
-      <ToolBar
+    <S.Left>
+      <ToolBox
         tools={props.tools}
-        onToolSelect={props.onToolSelect}
-        selectedTool={props.appState.selectedTool} />
+        selectedTool={props.appState.selectedTool}
+        onToolSelect={props.onToolSelect} />
+      <S.LayersContainer>
+        <StandardButton type={gs.TYPE.BASIC} onClick={props.onNewLayer}>New Layer</StandardButton>
+        <S.ScrollingWrapper>
+          <S.Layers>
+            <Layers
+              selectedLayer={props.appState.selectedLayer}
+              layers={props.layersState.layers}
+              onLayerClick={props.onLayerClick}
+              onLayerDelete={props.onLayerDelete} />
+          </S.Layers>
+        </S.ScrollingWrapper>
+      </S.LayersContainer>
+    </S.Left>
+    <S.Center>
       <LayeredCanvas
         selectedLayer={props.appState.selectedLayer}
         layers={props.layersState.layers}
@@ -21,16 +35,6 @@ const WorkShop = observer(props => (
         onCanvasMouseDown={props.onLayeredCanvasMouseDown}
         onCanvasDraw={props.onLayeredCanvasDraw} />
     </S.Center>
-    <S.Right>
-      <StandardButton type={gs.TYPE.BASIC} onClick={props.onNewLayer}>New Layer</StandardButton>
-      <S.Layers>
-        <Layers
-          selectedLayer={props.appState.selectedLayer}
-          layers={props.layersState.layers}
-          onLayerClick={props.onLayerClick}
-          onLayerDelete={props.onLayerDelete} />
-      </S.Layers>
-    </S.Right>
   </S.WorkShop>
 ));
 

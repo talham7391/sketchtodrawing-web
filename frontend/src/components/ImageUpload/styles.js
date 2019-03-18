@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const ImageUpload = styled.div`
   height: 100vh;
   display: grid;
-  grid-template-columns: 1fr 30%;
+  grid-template-columns: 30% 1fr;
 `;
 
 export const CanvasContainer = styled.div`
@@ -45,7 +45,7 @@ export const MiddleContainer = styled.div`
   height: 100%;
 `;
 
-export const RightContainer = styled.div`
+export const LeftContainer = styled.div`
   background-color: white;
   padding: 14px 20px;
   display: grid;
