@@ -1,4 +1,4 @@
-import { TOOLS } from '../AppState';
+import { TOOLS, TOOL_SETTINGS } from '../AppState';
 import _ from 'lodash';
 
 // function getMean(pixelData, x, y, ) {
@@ -133,6 +133,7 @@ const drawingContext = {
   startedAt: null,
   originalImageData: null,
   pathDrawn: [],
+  brushSize: null,
 };
 
 
@@ -145,8 +146,10 @@ export function setContext(settings, canvas, percentageFromLeft, percentageFromT
   const context = canvas.getContext('2d');
   drawingContext.originalImageData = context.getImageData(0, 0, canvas.width, canvas.height);
 
-  if (drawingContext.tool === TOOLS.BRUSH) {
-    context.fillStyle = '#000000';
+  if (drawingContext.tool === TOOLS.BRUSH.id) {
+    drawingContext.brushSize = settings.toolSettings[settings.selectedTool][TOOL_SETTINGS.BRUSH.SIZE].value;
+  } else if (drawingContext.tool === TOOLS.ERASER.id) {
+    drawingContext.brushSize = settings.toolSettings[settings.selectedTool][TOOL_SETTINGS.ERASER.SIZE].value;
   }
 }
 
@@ -156,6 +159,7 @@ export function commitDraw() {
   drawingContext.startedAt = null;
   drawingContext.originalImageData = null;
   drawingContext.pathDrawn = [];
+  drawingContext.brushSize = null;
 }
 
 
@@ -177,7 +181,7 @@ export function draw(settings, canvas, percentageFromLeft, percentageFromTop) {
         Math.pow(percentageFromTop - previousPoint.percentageFromTop, 2)
       );
       
-      const JUMP = 0.01;
+      const JUMP = drawingContext.brushSize / 1000;
 
       for (let i = JUMP; i < distance; i += JUMP) {
         const p = i / distance;
@@ -191,10 +195,10 @@ export function draw(settings, canvas, percentageFromLeft, percentageFromTop) {
     }
   };
 
-  if (drawingContext.tool === TOOLS.BRUSH) {
+  if (drawingContext.tool === TOOLS.BRUSH.id) {
     const paintArc = (l, t, pushToPath = true) => {
       context.beginPath();
-      context.arc(canvas.width * l, canvas.height * t, 10, 0, 2 * Math.PI);
+      context.arc(canvas.width * l, canvas.height * t, drawingContext.brushSize, 0, 2 * Math.PI);
       context.fill();
       context.closePath();
       if (pushToPath) {
@@ -202,11 +206,11 @@ export function draw(settings, canvas, percentageFromLeft, percentageFromTop) {
       }
     };
     enterpolatedDraw(paintArc);
-  } else if (drawingContext.tool === TOOLS.ERASER) {
+  } else if (drawingContext.tool === TOOLS.ERASER.id) {
     const eraseArc = (l, t, pushToPath = true) => {
       context.save();
       context.beginPath();
-      context.arc(canvas.width * l, canvas.height * t, 10, 0, 2 * Math.PI);
+      context.arc(canvas.width * l, canvas.height * t, drawingContext.brushSize, 0, 2 * Math.PI);
       context.clip();
       context.clearRect(0, 0, canvas.width, canvas.height);
       context.closePath();

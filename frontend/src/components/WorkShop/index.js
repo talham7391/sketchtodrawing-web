@@ -10,22 +10,28 @@ const enhancer = compose(
   })),
   withProps(props => ({
     tools: [{
-      id: TOOLS.BRUSH,
+      id: TOOLS.BRUSH.id,
       iconSrc: '/images/icons/brush.png',
+      settings: props.appState.toolSettings[TOOLS.BRUSH.id],
     }, {
-      id: TOOLS.ERASER,
+      id: TOOLS.ERASER.id,
       iconSrc: '/images/icons/eraser.png',
+      settings: props.appState.toolSettings[TOOLS.ERASER.id],
     }],
   })),
   withHandlers({
     onToolSelect: props => id => {
-      props.appState.selectedTool = props.appState.selectedTool === id ? null : id;
+      props.appState.selectedTool = id;
+    },
+    onSettingChange: props => (id, val) => {
+      props.appState.toolSettings[props.appState.selectedTool][id].value = val;
     },
     onNewLayer: props => _ => {
-      props.layersState.newLayer();
+      const layerId = props.layersState.newLayer();
+      props.appState.selectedLayer = layerId;
     },
     onLayerClick: props => id => {
-      props.appState.selectedLayer = props.appState.selectedLayer === id ? null : id;
+      props.appState.selectedLayer = id;
     },
     onLayerDelete: props => id => {
       if (props.appState.selectedLayer === id) {

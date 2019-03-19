@@ -2,26 +2,90 @@ import { observable, action } from 'mobx';
 import _ from 'lodash';
 import uuid from 'uuid/v1';
 
+export const SETTING_TYPES = {
+  RANGE: 0,
+};
+
+export const TOOL_SETTINGS = {
+  BRUSH: {
+    SIZE: 0,
+    ROPE: 1,
+  },
+  ERASER: {
+    SIZE: 2,
+    ROPE: 3,
+  },
+};
+
 export const TOOLS = {
-  BRUSH: 0,
-  ERASER: 1,
+  BRUSH: {
+    id: 0,
+    settings: {
+      [TOOL_SETTINGS.BRUSH.SIZE]: {
+        id: TOOL_SETTINGS.BRUSH.SIZE,
+        name: 'Size',
+        type: SETTING_TYPES.RANGE,
+        range: [1, 50],
+        initialValue: 1,
+      },
+      [TOOL_SETTINGS.BRUSH.ROPE]: {
+        id: TOOL_SETTINGS.BRUSH.ROPE,
+        name: 'Rope',
+        type: SETTING_TYPES.RANGE,
+        range: [0, 6],
+        initialValue: 0,
+      },
+    },
+  },
+  ERASER: {
+    id: 1,
+    settings: {
+      [TOOL_SETTINGS.ERASER.SIZE]: {
+        id: TOOL_SETTINGS.ERASER.SIZE,
+        name: 'Size',
+        type: SETTING_TYPES.RANGE,
+        range: [1, 50],
+        initialValue: 1,
+      },
+      [TOOL_SETTINGS.ERASER.ROPE]: {
+        id: TOOL_SETTINGS.ERASER.ROPE,
+        name: 'Rope',
+        type: SETTING_TYPES.RANGE,
+        range: [1, 100],
+        initialValue: 1,
+      },
+    },
+  },
 };
 
 
 const AppState = observable({
-  selectedTool: null,
+  selectedTool: TOOLS.BRUSH.id,
+  toolSettings: {
+    [TOOLS.BRUSH.id]: initSettings(TOOLS.BRUSH.settings),
+    [TOOLS.ERASER.id]: initSettings(TOOLS.ERASER.settings),
+  },
   selectedToolProperties: null,
   selectedLayer: null,
 });
 export default AppState;
 
 
+function initSettings(settings) {
+  _.each(settings, setting => {
+    setting.value = setting.initialValue;
+  });
+  return settings;
+}
+
+
 export const LayersState = observable({
   layers: [],
 
   addLayer (imageData, name) {
+    const layerId = uuid();
     this.layers.push({
-      id: uuid(),
+      id: layerId,
       zIndex: this.layers.length,
       imageData,
       name,
@@ -30,6 +94,7 @@ export const LayersState = observable({
         layers: true,
       },
     });
+    return layerId;
   },
 
   newLayer() {
@@ -39,7 +104,7 @@ export const LayersState = observable({
     } else {
       imgd = new ImageData(this.layers[0].imageData.width, this.layers[0].imageData.height);
     }
-    this.addLayer(imgd, `New Layer ${this.layers.length + 1}`);
+    return this.addLayer(imgd, `New Layer ${this.layers.length + 1}`);
   },
 
   deleteLayer (id) {

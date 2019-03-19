@@ -13,7 +13,8 @@ const WorkShop = observer(props => (
       <ToolBox
         tools={props.tools}
         selectedTool={props.appState.selectedTool}
-        onToolSelect={props.onToolSelect} />
+        onToolSelect={props.onToolSelect}
+        onSettingChange={props.onSettingChange} />
       <S.LayersContainer>
         <StandardButton type={gs.TYPE.BASIC} onClick={props.onNewLayer}>New Layer</StandardButton>
         <S.ScrollingWrapper>
