@@ -13,7 +13,11 @@ const enhancer = compose(
     onImageData: props => imageData => {
       props.setStage(STAGES.DRAWING);
       if (imageData) {
-        props.layersState.addLayer(imageData, 'New Layer');
+        const layerId = props.layersState.addLayer(imageData, 'New Layer');
+        props.appState.selectedLayer = layerId;
+      } else {
+        const layerId = props.layersState.newLayer();
+        props.appState.selectedLayer = layerId;
       }
     },
   }),

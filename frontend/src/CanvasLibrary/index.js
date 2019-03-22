@@ -134,6 +134,7 @@ const drawingContext = {
   originalImageData: null,
   pathDrawn: [],
   brushSize: null,
+  rope: null,
 };
 
 
@@ -148,8 +149,10 @@ export function setContext(settings, canvas, percentageFromLeft, percentageFromT
 
   if (drawingContext.tool === TOOLS.BRUSH.id) {
     drawingContext.brushSize = settings.toolSettings[settings.selectedTool][TOOL_SETTINGS.BRUSH.SIZE].value;
+    drawingContext.rope = settings.toolSettings[settings.selectedTool][TOOL_SETTINGS.BRUSH.ROPE].value;
   } else if (drawingContext.tool === TOOLS.ERASER.id) {
     drawingContext.brushSize = settings.toolSettings[settings.selectedTool][TOOL_SETTINGS.ERASER.SIZE].value;
+    drawingContext.rope = settings.toolSettings[settings.selectedTool][TOOL_SETTINGS.ERASER.ROPE].value;
   }
 }
 
@@ -180,16 +183,21 @@ export function draw(settings, canvas, percentageFromLeft, percentageFromTop) {
         + 
         Math.pow(percentageFromTop - previousPoint.percentageFromTop, 2)
       );
-      
-      const JUMP = drawingContext.brushSize / 1000;
 
-      for (let i = JUMP; i < distance; i += JUMP) {
-        const p = i / distance;
-        const pfl = percentageFromLeft - (percentageFromLeft - previousPoint.percentageFromLeft) * p;
-        const pft = percentageFromTop - (percentageFromTop - previousPoint.percentageFromTop) * p;
-        drawFunc(pfl, pft, false);
+      const drawAtDistance = distance - drawingContext.rope;
+      if (drawAtDistance > 0) {
+        const d = drawAtDistance / distance;
+        const nl = previousPoint.percentageFromLeft + (percentageFromLeft - previousPoint.percentageFromLeft) * d;
+        const nt = previousPoint.percentageFromTop + (percentageFromTop - previousPoint.percentageFromTop) * d;
+        const JUMP = drawingContext.brushSize / 1000;
+        for (let i = JUMP; i < drawAtDistance; i += JUMP) {
+          const p = i / drawAtDistance;
+          const pfl = nl - (nl - previousPoint.percentageFromLeft) * p;
+          const pft = nt - (nt - previousPoint.percentageFromTop) * p;
+          drawFunc(pfl, pft, false);
+        }
+        drawFunc(nl, nt);
       }
-      drawFunc(percentageFromLeft, percentageFromTop);
     } else {
       drawFunc(percentageFromLeft, percentageFromTop);
     }
