@@ -8,7 +8,8 @@ import StandardButton from '../buttons/StandardButton';
 import * as gs from '../../styleConstants.js';
 
 const WorkShop = observer(props => (
-  <S.WorkShop>
+  <S.WorkShop
+    showCursor={props.showCursor} >
     <S.Left>
       <ToolBox
         tools={props.tools}
@@ -34,7 +35,10 @@ const WorkShop = observer(props => (
         layers={props.layersState.layers}
         onCanvasMouseUp={props.onLayeredCanvasMouseUp}
         onCanvasMouseDown={props.onLayeredCanvasMouseDown}
-        onCanvasDraw={props.onLayeredCanvasDraw} />
+        onCanvasDraw={props.onLayeredCanvasDraw}
+        onMouseEnter={props.onMouseEnter}
+        onMouseLeave={props.onMouseLeave}
+        onScaleChange={props.onScaleChange} />
     </S.Center>
   </S.WorkShop>
 ));

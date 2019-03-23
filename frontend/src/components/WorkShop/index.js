@@ -1,12 +1,16 @@
-import { compose, withProps, withHandlers } from 'recompose';
+import { compose, withProps, withHandlers, withState } from 'recompose';
 import WorkShop from './WorkShop';
-import AppState, { LayersState, TOOLS } from '../../AppState';
+import AppState, { LayersState, CursorState, TOOLS, TOOL_SETTINGS } from '../../AppState';
 import * as CL from '../../CanvasLibrary';
+import Brush from '../cursors/Brush';
 
 const enhancer = compose(
+  withState('showCursor', 'setShowCursor', true),
+  withState('layeredCanvasScale', 'setLayeredCanvasScale', 1),
   withProps(_ => ({
     appState: AppState,
     layersState: LayersState,
+    cursorState: CursorState,
   })),
   withProps(props => ({
     tools: [{
@@ -48,6 +52,20 @@ const enhancer = compose(
     },
     onLayeredCanvasDraw: props => (canvas, id, percentageFromLeft, percentageFromTop) => {
       CL.draw(props.appState, canvas, percentageFromLeft, percentageFromTop);
+    },
+    onMouseEnter: props => _ => {
+      props.setShowCursor(false);
+      props.cursorState.start(Brush, {
+        size: props.appState.toolSettings[props.appState.selectedTool][TOOL_SETTINGS.SIZE].value * props.layeredCanvasScale,
+      });
+    },
+    onMouseLeave: props => _ => {
+      props.setShowCursor(true);
+      props.cursorState.stop();
+    },
+    onScaleChange: props => scale => {
+      props.setLayeredCanvasScale(scale);
+      props.cursorState.props.size = props.appState.toolSettings[props.appState.selectedTool][TOOL_SETTINGS.SIZE].value * scale;
     },
   }),
 );

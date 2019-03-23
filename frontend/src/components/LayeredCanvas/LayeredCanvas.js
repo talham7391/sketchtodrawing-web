@@ -4,7 +4,10 @@ import _ from 'lodash';
 import { observer } from 'mobx-react';
 
 const LayeredCanvas = observer(props => (
-  <S.LayeredCanvas onWheel={props.onWheel} >
+  <S.LayeredCanvas
+    onWheel={props.onWheel}
+    onMouseEnter={props.onMouseEnter}
+    onMouseLeave={props.onMouseLeave} >
     { _.map(props.layers, layer => (
       <CustomCanvas
         key={layer.id}
@@ -73,11 +76,13 @@ class CustomCanvas extends Component {
     this.renderImageData();
     document.addEventListener('mouseup', this.onMouseUp);
     document.addEventListener('mousedown', this.onMouseDown);
+    document.addEventListener('mousemove', this.onMouseMove);
   }
 
   componentWillUnmount () {
     document.removeEventListener('mouseup', this.onMouseUp);
     document.removeEventListener('mousedown', this.onMouseDown);
+    document.removeEventListener('mousemove', this.onMouseMove);
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -96,8 +101,7 @@ class CustomCanvas extends Component {
         ref={this.canvasRef}
         scale={this.props.scale}
         translateX={this.props.translateX}
-        translateY={this.props.translateY}
-        onMouseMove={this.onMouseMove} >
+        translateY={this.props.translateY} >
       </S.Canvas>
     );
   }

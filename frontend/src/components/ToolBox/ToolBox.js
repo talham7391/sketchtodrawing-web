@@ -20,7 +20,7 @@ const ToolBox = observer(props => (
     </S.Tools>
     <S.Settings>
       { props.settings && _.map(props.settings, setting => (
-        <S.Setting key={setting.id}>
+        <S.Setting key={`${props.selectedTool},${setting.id}`}>
           <div>{setting.name}</div>
           { setting.type === SETTING_TYPES.RANGE &&
             <EnhancedContinuousSlider

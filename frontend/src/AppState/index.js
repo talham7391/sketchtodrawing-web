@@ -7,29 +7,23 @@ export const SETTING_TYPES = {
 };
 
 export const TOOL_SETTINGS = {
-  BRUSH: {
-    SIZE: 0,
-    ROPE: 1,
-  },
-  ERASER: {
-    SIZE: 2,
-    ROPE: 3,
-  },
+  SIZE: 0,
+  ROPE: 1,
 };
 
 export const TOOLS = {
   BRUSH: {
     id: 0,
     settings: {
-      [TOOL_SETTINGS.BRUSH.SIZE]: {
-        id: TOOL_SETTINGS.BRUSH.SIZE,
+      [TOOL_SETTINGS.SIZE]: {
+        id: TOOL_SETTINGS.SIZE,
         name: 'Size',
         type: SETTING_TYPES.RANGE,
         range: [1, 50],
         initialValue: 10,
       },
-      [TOOL_SETTINGS.BRUSH.ROPE]: {
-        id: TOOL_SETTINGS.BRUSH.ROPE,
+      [TOOL_SETTINGS.ROPE]: {
+        id: TOOL_SETTINGS.ROPE,
         name: 'Rope',
         type: SETTING_TYPES.RANGE,
         range: [0, 0.2],
@@ -40,15 +34,15 @@ export const TOOLS = {
   ERASER: {
     id: 1,
     settings: {
-      [TOOL_SETTINGS.ERASER.SIZE]: {
-        id: TOOL_SETTINGS.ERASER.SIZE,
+      [TOOL_SETTINGS.SIZE]: {
+        id: TOOL_SETTINGS.SIZE,
         name: 'Size',
         type: SETTING_TYPES.RANGE,
         range: [1, 50],
         initialValue: 10,
       },
-      [TOOL_SETTINGS.ERASER.ROPE]: {
-        id: TOOL_SETTINGS.ERASER.ROPE,
+      [TOOL_SETTINGS.ROPE]: {
+        id: TOOL_SETTINGS.ROPE,
         name: 'Rope',
         type: SETTING_TYPES.RANGE,
         range: [0, 0.2],
@@ -137,4 +131,27 @@ export const LayersState = observable({
   newLayer: action,
   deleteLayer: action,
   updateLayerImageData: action,
-})
+});
+
+export const CursorState = observable({
+  mouseX: null,
+  mouseY: null,
+  render: false,
+  comp: null,
+  props: null,
+
+  start(comp, props) {
+    this.render = true;
+    this.comp = comp;
+    this.props = props;
+  },
+
+  stop() {
+    this.render = false;
+    this.comp = null;
+    this.props = null;
+  },
+}, {
+  start: action,
+  stop: action,
+});

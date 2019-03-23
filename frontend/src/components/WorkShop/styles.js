@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const WorkShop = styled.div`
   display: grid;
   grid-template-columns: 30% 1fr;
+  cursor: ${props => props.showCursor ? 'auto' : 'none'};
 `;
 
 export const Center = styled.div`

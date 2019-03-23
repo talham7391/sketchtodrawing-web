@@ -147,13 +147,8 @@ export function setContext(settings, canvas, percentageFromLeft, percentageFromT
   const context = canvas.getContext('2d');
   drawingContext.originalImageData = context.getImageData(0, 0, canvas.width, canvas.height);
 
-  if (drawingContext.tool === TOOLS.BRUSH.id) {
-    drawingContext.brushSize = settings.toolSettings[settings.selectedTool][TOOL_SETTINGS.BRUSH.SIZE].value;
-    drawingContext.rope = settings.toolSettings[settings.selectedTool][TOOL_SETTINGS.BRUSH.ROPE].value;
-  } else if (drawingContext.tool === TOOLS.ERASER.id) {
-    drawingContext.brushSize = settings.toolSettings[settings.selectedTool][TOOL_SETTINGS.ERASER.SIZE].value;
-    drawingContext.rope = settings.toolSettings[settings.selectedTool][TOOL_SETTINGS.ERASER.ROPE].value;
-  }
+  drawingContext.brushSize = settings.toolSettings[settings.selectedTool][TOOL_SETTINGS.SIZE].value;
+  drawingContext.rope = settings.toolSettings[settings.selectedTool][TOOL_SETTINGS.ROPE].value;
 }
 
 

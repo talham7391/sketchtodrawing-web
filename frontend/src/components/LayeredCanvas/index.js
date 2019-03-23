@@ -20,6 +20,7 @@ const enhancer = compose(
         props.setImplicitScale(implicitScale);
         const scale = computeScale(implicitScale);
         props.setScale(scale);
+        props.onScaleChange(scale);
       } else {
         const x = props.translateX - evt.deltaX / 10;
         const y = props.translateY - evt.deltaY / 10;
