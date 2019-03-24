@@ -29,6 +29,9 @@ const enhancer = compose(
     },
     onSettingChange: props => (id, val) => {
       props.appState.toolSettings[props.appState.selectedTool][id].value = val;
+      if (props.cursorState.props) {
+        props.cursorState.props.size = props.appState.toolSettings[props.appState.selectedTool][TOOL_SETTINGS.SIZE].value * props.layeredCanvasScale;
+      }
     },
     onNewLayer: props => _ => {
       const layerId = props.layersState.newLayer();
@@ -66,6 +69,14 @@ const enhancer = compose(
     onScaleChange: props => scale => {
       props.setLayeredCanvasScale(scale);
       props.cursorState.props.size = props.appState.toolSettings[props.appState.selectedTool][TOOL_SETTINGS.SIZE].value * scale;
+    },
+    onSliderStart: props => id => {
+      props.cursorState.start(Brush, {
+        size: props.appState.toolSettings[props.appState.selectedTool][TOOL_SETTINGS.SIZE].value * props.layeredCanvasScale,
+      });
+    },
+    onSliderStop: props => id => {
+      props.cursorState.stop();
     },
   }),
 );

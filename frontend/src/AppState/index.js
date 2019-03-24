@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { observable, action, computed } from 'mobx';
 import _ from 'lodash';
 import uuid from 'uuid/v1';
 
@@ -136,22 +136,38 @@ export const LayersState = observable({
 export const CursorState = observable({
   mouseX: null,
   mouseY: null,
-  render: false,
-  comp: null,
-  props: null,
+  renderStack: [],
+
+  get render() {
+    const r = _.last(this.renderStack);
+    return r && r.render;
+  },
+
+  get comp() {
+    const r = _.last(this.renderStack);
+    return r && r.comp;
+  },
+
+  get props() {
+    const r = _.last(this.renderStack);
+    return r && r.props;
+  },
 
   start(comp, props) {
-    this.render = true;
-    this.comp = comp;
-    this.props = props;
+    this.renderStack.push({
+      render: true,
+      comp: comp,
+      props: props,
+    });
   },
 
   stop() {
-    this.render = false;
-    this.comp = null;
-    this.props = null;
+    this.renderStack.pop();
   },
 }, {
+  render: computed,
+  comp: computed,
+  props: computed,
   start: action,
   stop: action,
 });

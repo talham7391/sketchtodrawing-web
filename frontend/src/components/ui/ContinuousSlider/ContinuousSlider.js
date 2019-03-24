@@ -4,7 +4,9 @@ import * as S from './styles.js';
 const ContinuousSlider = props => (
   <S.ContinuousSlider
     onMouseDown={props.onMouseDown}
-    ref={props.setParentRef}>
+    ref={props.setParentRef}
+    onMouseEnter={props.onMouseEnter}
+    onMouseLeave={props.onMouseLeave} >
     <S.Base></S.Base>
     <S.Dot
       left={props.left}

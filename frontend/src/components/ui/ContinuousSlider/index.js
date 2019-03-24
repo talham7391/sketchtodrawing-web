@@ -29,8 +29,12 @@ const enhancer = compose(
     onMouseDown: props => evt => {
       props.setMouseDown(true);
       props.moveDot(evt);
+      props.onSliderStart();
     },
     onMouseUp: props => _ => {
+      if (props.mouseDown) {
+        props.onSliderStop();
+      }
       props.setMouseDown(false);
     },
     onMouseMove: props => evt => {

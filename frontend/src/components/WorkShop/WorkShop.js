@@ -15,7 +15,9 @@ const WorkShop = observer(props => (
         tools={props.tools}
         selectedTool={props.appState.selectedTool}
         onToolSelect={props.onToolSelect}
-        onSettingChange={props.onSettingChange} />
+        onSettingChange={props.onSettingChange}
+        onSliderStart={props.onSliderStart}
+        onSliderStop={props.onSliderStop} />
       <S.LayersContainer>
         <StandardButton type={gs.TYPE.BASIC} onClick={props.onNewLayer}>New Layer</StandardButton>
         <S.ScrollingWrapper>

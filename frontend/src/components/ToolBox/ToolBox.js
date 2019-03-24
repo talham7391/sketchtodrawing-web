@@ -27,7 +27,9 @@ const ToolBox = observer(props => (
               id={setting.id}
               range={setting.range}
               onChange={props.onSettingChange}
-              value={setting.value} />
+              value={setting.value}
+              onSliderStart={props.onSliderStart}
+              onSliderStop={props.onSliderStop} />
           }
         </S.Setting>
       )) }
@@ -42,13 +44,21 @@ class EnhancedContinuousSlider extends Component {
     this.onChange = val => {
       this.props.onChange && this.props.onChange(this.props.id, val);
     };
+    this.onSliderStart = evt => {
+      this.props.onSliderStart && this.props.onSliderStart(this.props.id);
+    };
+    this.onSliderStop = evt => {
+      this.props.onSliderStop && this.props.onSliderStop(this.props.id);
+    };
   }
   render() {
     return (
       <ContinuousSlider
         range={this.props.range}
         onChange={this.onChange}
-        value={this.props.value} />
+        value={this.props.value}
+        onSliderStart={this.onSliderStart}
+        onSliderStop={this.onSliderStop} />
     );
   }
 }
