@@ -148,7 +148,9 @@ export function setContext(settings, canvas, percentageFromLeft, percentageFromT
   drawingContext.originalImageData = context.getImageData(0, 0, canvas.width, canvas.height);
 
   drawingContext.brushSize = settings.toolSettings[settings.selectedTool][TOOL_SETTINGS.SIZE].value;
-  drawingContext.rope = settings.toolSettings[settings.selectedTool][TOOL_SETTINGS.ROPE].value;
+
+  const d = Math.sqrt(Math.pow(canvas.width, 2), Math.pow(canvas.height, 2));
+  drawingContext.rope = settings.toolSettings[settings.selectedTool][TOOL_SETTINGS.ROPE].value / d;
 }
 
 
@@ -224,4 +226,6 @@ export function draw(settings, canvas, percentageFromLeft, percentageFromTop) {
     };
     enterpolatedDraw(eraseArc);
   }
+
+  return _.last(drawingContext.pathDrawn);
 }

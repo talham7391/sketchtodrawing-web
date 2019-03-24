@@ -47,7 +47,7 @@ class CustomCanvas extends Component {
         const distanceFromTop = evt.clientY - cr.top;
         const percentageFromLeft = distanceFromLeft / cr.width;
         const percentageFromTop = distanceFromTop / cr.height;
-        func(canvas, this.props.layer.id, percentageFromLeft, percentageFromTop);
+        func(evt, canvas, this.props.layer.id, percentageFromLeft, percentageFromTop);
       }
     };
 
