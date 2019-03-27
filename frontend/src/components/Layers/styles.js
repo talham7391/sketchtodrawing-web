@@ -9,7 +9,7 @@ export const Layers = styled.div`
 
 export const Layer = styled.div`
   display: grid;
-  grid-template-columns: auto auto 1fr auto;
+  grid-template-columns: auto auto 1fr auto auto;
   padding: 0px 10px;
   column-gap: 18px;
   align-items: center;
@@ -33,4 +33,14 @@ export const Eye = styled.img`
   width: 20px;
   opacity: ${props => props.isHidden ? '0.2' : '1'};
   cursor: pointer;
+`;
+
+export const Arrows = styled.div`
+  display: grid;
+  grid-template-rows: auto auto;
+  row-gap: 4px;
+
+  > *:first-child {
+    transform: rotate(180deg);
+  }
 `;

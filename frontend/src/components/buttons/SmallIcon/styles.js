@@ -39,6 +39,7 @@ export const JustIcon = styled.div`
   }
 
   > img {
-    width: 16px;
+    ${props => props.imgWidth ? `width: ${props.imgWidth}px;` : ''}
+    ${props => props.imgHeight ? `height: ${props.imgHeight}px;` : ''}
   }
 `;

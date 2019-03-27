@@ -12,6 +12,8 @@ const Layers = observer(props => (
         onClick={props.onLayerClick}
         onDelete={props.onLayerDelete}
         onToggleVisibility={props.onLayerToggleVisibility}
+        onMoveLayerUp={props.onLayerMoveUp}
+        onMoveLayerDown={props.onLayerMoveDown}
         selected={props.selectedLayer === layer.id}
         layer={layer} />
     )) }
@@ -33,6 +35,16 @@ class Layer extends Component {
       evt.stopPropagation();
       this.props.onToggleVisibility && this.props.onToggleVisibility(this.props.layer.id); 
     };
+    
+    this.onMoveLayerUp = evt => {
+      evt.stopPropagation();
+      this.props.onMoveLayerUp && this.props.onMoveLayerUp(this.props.layer.id);
+    };
+    
+    this.onMoveLayerDown = evt => {
+      evt.stopPropagation();
+      this.props.onMoveLayerDown && this.props.onMoveLayerDown(this.props.layer.id);
+    };
   }
 
   render () {
@@ -45,7 +57,20 @@ class Layer extends Component {
         <EnhancedCustomCanvas
           layer={this.props.layer} />
         <p>{this.props.layer.name}</p>
-        <SmallIcon justIcon onClick={this.onDelete}><img src="/images/icons/trash.png" alt="Delete layer." /></SmallIcon>
+        <S.Arrows>
+          <SmallIcon justIcon imgHeight={12} onClick={this.onMoveLayerUp}>
+            <img src="/images/icons/arrow.png" alt="Move layer up."/>
+          </SmallIcon>
+          <SmallIcon justIcon imgHeight={12} onClick={this.onMoveLayerDown}>
+            <img src="/images/icons/arrow.png" alt="Move layer down."/>
+          </SmallIcon>
+        </S.Arrows>
+        <SmallIcon
+          justIcon
+          imgWidth={16}
+          onClick={this.onDelete}>
+          <img src="/images/icons/trash.png" alt="Delete layer." />
+        </SmallIcon>
       </S.Layer>
     );
   }

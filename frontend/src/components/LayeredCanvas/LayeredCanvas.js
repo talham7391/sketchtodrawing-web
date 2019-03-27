@@ -8,8 +8,9 @@ const LayeredCanvas = observer(props => (
     onWheel={props.onWheel}
     onMouseEnter={props.onMouseEnter}
     onMouseLeave={props.onMouseLeave} >
-    { _.map(_.filter(props.layers, layer => !layer.isHidden), layer => (
+    { _.map(_.filter(props.layers, layer => !layer.isHidden), (layer, idx) => (
       <CustomCanvas
+        zIndex={idx}
         key={layer.id}
         layer={layer}
         scale={props.scale}
@@ -97,7 +98,7 @@ class CustomCanvas extends Component {
     return (
       <S.Canvas
         selected={this.props.selected}
-        zIndex={this.props.layer.zIndex}
+        zIndex={this.props.zIndex}
         ref={this.canvasRef}
         scale={this.props.scale}
         translateX={this.props.translateX}

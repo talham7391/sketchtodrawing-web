@@ -81,7 +81,6 @@ export const LayersState = observable({
     const layerId = uuid();
     this.layers.push({
       id: layerId,
-      zIndex: this.layers.length,
       imageData,
       name,
       isHidden: false,
@@ -104,15 +103,7 @@ export const LayersState = observable({
   },
 
   deleteLayer (id) {
-    const l = _.find(this.layers, layer => layer.id === id);
-    if (l) {
-      _.remove(this.layers, layer => layer.id === id);
-      _.each(this.layers, layer => {
-        if (layer.zIndex > l.zIndex) {
-          layer.zIndex -= 1;
-        }
-      });
-    }
+    _.remove(this.layers, layer => layer.id === id);
   },
 
   updateLayerImageData (id, imageData) {
@@ -135,12 +126,36 @@ export const LayersState = observable({
     }
   },
 
+  moveLayerUp (id) {
+    for (let i = 0; i < this.layers.length - 1; i++) {
+      if (this.layers[i].id === id) {
+        const temp = this.layers[i];
+        this.layers[i] = this.layers[i + 1];
+        this.layers[i + 1] = temp;
+        break;
+      }
+    }
+  },
+  
+  moveLayerDown (id) {
+    for (let i = 1; i < this.layers.length; i++) {
+      if (this.layers[i].id === id) {
+        const temp = this.layers[i];
+        this.layers[i] = this.layers[i - 1];
+        this.layers[i - 1] = temp;
+        break;
+      }
+    }
+  },
+
 }, {
   addLayer: action,
   newLayer: action,
   deleteLayer: action,
   updateLayerImageData: action,
   toggleLayerVisibility: action,
+  moveLayerUp: action,
+  moveLayerDown: action,
 });
 
 export const CursorState = observable({

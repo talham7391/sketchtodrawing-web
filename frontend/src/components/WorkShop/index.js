@@ -51,6 +51,12 @@ const enhancer = compose(
     onLayerToggleVisibility: props => id => {
       props.layersState.toggleLayerVisibility(id);
     },
+    onLayerMoveUp: props => id => {
+      props.layersState.moveLayerUp(id);
+    },
+    onLayerMoveDown: props => id => {
+      props.layersState.moveLayerDown(id);
+    },
     onLayeredCanvasMouseDown: props => (evt, canvas, id, percentageFromLeft, percentageFromTop) => {
       if (props.isDrawingAllowed) {
         CL.setContext(props.appState, canvas, percentageFromLeft, percentageFromTop, props.layeredCanvasScale);

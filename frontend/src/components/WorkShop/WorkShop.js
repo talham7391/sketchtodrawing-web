@@ -29,7 +29,9 @@ const WorkShop = observer(props => (
               layers={props.layersState.layers}
               onLayerClick={props.onLayerClick}
               onLayerDelete={props.onLayerDelete}
-              onLayerToggleVisibility={props.onLayerToggleVisibility} />
+              onLayerToggleVisibility={props.onLayerToggleVisibility}
+              onLayerMoveUp={props.onLayerMoveUp}
+              onLayerMoveDown={props.onLayerMoveDown} />
           </S.Layers>
         </S.ScrollingWrapper>
       </S.LayersContainer>
