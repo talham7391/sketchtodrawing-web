@@ -15,7 +15,8 @@ export const Left = styled.div`
   background-color: white;
   padding: 14px 20px;
   display: grid;
-  grid-template-rows: 1fr 2fr;
+  grid-template-rows: auto auto 1fr;
+  row-gap: 30px
 `;
 
 export const LayersContainer = styled.div`

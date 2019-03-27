@@ -135,6 +135,7 @@ const drawingContext = {
   pathDrawn: [],
   brushSize: null,
   rope: null,
+  color: null,
 };
 
 
@@ -151,6 +152,8 @@ export function setContext(settings, canvas, percentageFromLeft, percentageFromT
 
   const d = Math.sqrt(Math.pow(canvas.width, 2), Math.pow(canvas.height, 2));
   drawingContext.rope = settings.toolSettings[settings.selectedTool][TOOL_SETTINGS.ROPE].value / d;
+
+  drawingContext.color = settings.color;
 }
 
 
@@ -202,6 +205,7 @@ export function draw(settings, canvas, percentageFromLeft, percentageFromTop) {
 
   if (drawingContext.tool === TOOLS.BRUSH.id) {
     const paintArc = (l, t, pushToPath = true) => {
+      context.fillStyle = `rgba(${drawingContext.color.r}, ${drawingContext.color.g}, ${drawingContext.color.b}, 1)`;
       context.beginPath();
       context.arc(canvas.width * l, canvas.height * t, drawingContext.brushSize, 0, 2 * Math.PI);
       context.fill();

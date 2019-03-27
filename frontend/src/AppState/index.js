@@ -61,6 +61,7 @@ const AppState = observable({
   },
   selectedToolProperties: null,
   selectedLayer: null,
+  color: null,
 });
 export default AppState;
 

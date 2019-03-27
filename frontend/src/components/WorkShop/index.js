@@ -101,6 +101,9 @@ const enhancer = compose(
       props.cursorState.stop();
       props.setIsDrawingAllowed(true);
     },
+    onColorChange: props => color => {
+      props.appState.color = color;
+    },
   }),
 );
 

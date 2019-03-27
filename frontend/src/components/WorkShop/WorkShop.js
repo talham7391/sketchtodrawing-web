@@ -6,6 +6,7 @@ import Layers from '../Layers';
 import { observer } from 'mobx-react';
 import StandardButton from '../buttons/StandardButton';
 import * as gs from '../../styleConstants.js';
+import ColorPicker from '../ColorPicker';
 
 const WorkShop = observer(props => (
   <S.WorkShop
@@ -18,6 +19,7 @@ const WorkShop = observer(props => (
         onSettingChange={props.onSettingChange}
         onSliderStart={props.onSliderStart}
         onSliderStop={props.onSliderStop} />
+      <ColorPicker onChange={props.onColorChange}/>
       <S.LayersContainer>
         <StandardButton type={gs.TYPE.BASIC} onClick={props.onNewLayer}>New Layer</StandardButton>
         <S.ScrollingWrapper>
