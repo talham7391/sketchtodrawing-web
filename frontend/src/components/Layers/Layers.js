@@ -7,10 +7,11 @@ import SmallIcon from '../buttons/SmallIcon';
 const Layers = observer(props => (
   <S.Layers>
     { _.map(props.layers.slice().reverse(), layer => (
-      <Layer
+      <EnhancedLayer
         key={layer.id}
         onClick={props.onLayerClick}
         onDelete={props.onLayerDelete}
+        onToggleVisibility={props.onLayerToggleVisibility}
         selected={props.selectedLayer === layer.id}
         layer={layer} />
     )) }
@@ -27,11 +28,20 @@ class Layer extends Component {
       evt.stopPropagation();
       this.props.onDelete && this.props.onDelete(this.props.layer.id);
     };
+
+    this.onToggleVisibility = evt => {
+      evt.stopPropagation();
+      this.props.onToggleVisibility && this.props.onToggleVisibility(this.props.layer.id); 
+    };
   }
 
   render () {
     return (
       <S.Layer selected={this.props.selected} onClick={this.onClick}>
+        <S.Eye
+          onClick={this.onToggleVisibility}
+          src="/images/icons/eye.png"
+          isHidden={this.props.layer.isHidden}/>
         <EnhancedCustomCanvas
           layer={this.props.layer} />
         <p>{this.props.layer.name}</p>
@@ -75,6 +85,11 @@ class CustomCanvas extends Component {
     );
   }
 };
+
+const EnhancedLayer = observer(props => {
+  _ = props.layer.isHidden; // we need to dereference this property so that if it changes we rerender
+  return <Layer {...props}/>
+});
 
 const EnhancedCustomCanvas = observer(props => {
   _ = props.layer.dirty; // we need to dereference this property so that if it changes we rerender

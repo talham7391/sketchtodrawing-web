@@ -84,6 +84,7 @@ export const LayersState = observable({
       zIndex: this.layers.length,
       imageData,
       name,
+      isHidden: false,
       dirty: {
         display: true,
         layers: true,
@@ -127,11 +128,19 @@ export const LayersState = observable({
     }
   },
 
+  toggleLayerVisibility (id) {
+    const l = _.find(this.layers, layer => layer.id === id);
+    if (l) {
+      l.isHidden = !l.isHidden;
+    }
+  },
+
 }, {
   addLayer: action,
   newLayer: action,
   deleteLayer: action,
   updateLayerImageData: action,
+  toggleLayerVisibility: action,
 });
 
 export const CursorState = observable({

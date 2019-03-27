@@ -48,6 +48,9 @@ const enhancer = compose(
       }
       props.layersState.deleteLayer(id);
     },
+    onLayerToggleVisibility: props => id => {
+      props.layersState.toggleLayerVisibility(id);
+    },
     onLayeredCanvasMouseDown: props => (evt, canvas, id, percentageFromLeft, percentageFromTop) => {
       if (props.isDrawingAllowed) {
         CL.setContext(props.appState, canvas, percentageFromLeft, percentageFromTop, props.layeredCanvasScale);

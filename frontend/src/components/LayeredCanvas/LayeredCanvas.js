@@ -8,7 +8,7 @@ const LayeredCanvas = observer(props => (
     onWheel={props.onWheel}
     onMouseEnter={props.onMouseEnter}
     onMouseLeave={props.onMouseLeave} >
-    { _.map(props.layers, layer => (
+    { _.map(_.filter(props.layers, layer => !layer.isHidden), layer => (
       <CustomCanvas
         key={layer.id}
         layer={layer}

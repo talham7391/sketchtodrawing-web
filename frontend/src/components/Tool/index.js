@@ -3,7 +3,7 @@ import Tool from './Tool';
 
 const enhancer = compose(
   withHandlers({
-    onClick: props => _ => props.onClick(props.id),
+    onClick: props => _ => props.onClick && props.onClick(props.id),
   })
 );
 

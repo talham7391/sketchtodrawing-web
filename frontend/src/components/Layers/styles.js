@@ -9,8 +9,8 @@ export const Layers = styled.div`
 
 export const Layer = styled.div`
   display: grid;
-  grid-template-columns: auto 1fr auto;
-  padding-right: 10px;
+  grid-template-columns: auto auto 1fr auto;
+  padding: 0px 10px;
   column-gap: 18px;
   align-items: center;
   background-color: ${props => props.selected ? '#f5f5f5' : 'none'};
@@ -27,4 +27,10 @@ export const Layer = styled.div`
     width: 50px;
     height: 50px;
   }
+`;
+
+export const Eye = styled.img`
+  width: 20px;
+  opacity: ${props => props.isHidden ? '0.2' : '1'};
+  cursor: pointer;
 `;
