@@ -52,20 +52,22 @@ const enhancer = compose(
     }
   ),
   withHandlers({
-    renderColorCanvas: props => _ => {
+    renderColorCanvas: props => ({hue} = {}) => {
+      hue = hue || props.hue;
       const size = 255;
       const imageData = new ImageData(size, size);
       for (let i = 0; i < imageData.data.length; i += 4) {
         const ri = Math.trunc(i / 4);
         const w = ri % size;
         const h = Math.trunc(ri / size);
-        const rgb = util.getRGB(props.hue, w / size, 1 - h / size);
+        const rgb = util.getRGB(hue, w / size, 1 - h / size);
         imageData.data[i + 0] = rgb.r;
         imageData.data[i + 1] = rgb.g;
         imageData.data[i + 2] = rgb.b;
         imageData.data[i + 3] = 255;
       }
       props.setColorCanvasImageData(imageData);
+      return imageData;
     },
     renderHueCanvas: props => _ => {
       const size = 360;
@@ -81,47 +83,56 @@ const enhancer = compose(
       }
       props.setHueCanvasImageData(imageData);
     },
-    updateChosenColor: props => _ => {
-      if (props.colorCanvasImageData) {
-        const idx = (props.canvasCoords.x + props.canvasCoords.y * 255) * 4;
+    updateChosenColor: props => ({coords, imageData} = {}) => {
+      coords = coords || props.canvasCoords;
+      imageData = imageData || props.colorCanvasImageData;
+      if (imageData) {
+        const idx = (coords.x + coords.y * 255) * 4;
         const rgba = {
-          r: props.colorCanvasImageData.data[idx + 0],
-          g: props.colorCanvasImageData.data[idx + 1],
-          b: props.colorCanvasImageData.data[idx + 2],
-          a: props.colorCanvasImageData.data[idx + 3],
+          r: imageData.data[idx + 0],
+          g: imageData.data[idx + 1],
+          b: imageData.data[idx + 2],
+          a: imageData.data[idx + 3],
         };
         props.setChosenColor(rgba);
       }
     },
   }),
   withHandlers({
-    handleColorCanvasMouse: props => evt => {
-      if (props.colorMouseDown) {
-        const x = util.restrict(0, evt.clientX - props.colorMouseDown.left, props.colorMouseDown.width);
-        const y = util.restrict(0, evt.clientY - props.colorMouseDown.top, props.colorMouseDown.height);
-        props.setCanvasCoords({
-          x: Math.trunc(x / props.colorMouseDown.width * 254),
-          y: Math.trunc(y / props.colorMouseDown.height * 254),
-        });
-        props.updateChosenColor();
+    handleColorCanvasMouse: props => (evt, colorMouseDown) => {
+      colorMouseDown = colorMouseDown || props.colorMouseDown;
+      if (colorMouseDown) {
+        const x = util.restrict(0, evt.clientX - colorMouseDown.left, colorMouseDown.width);
+        const y = util.restrict(0, evt.clientY - colorMouseDown.top, colorMouseDown.height);
+        const coords = {
+          x: Math.trunc(x / colorMouseDown.width * 254),
+          y: Math.trunc(y / colorMouseDown.height * 254),
+        };
+        props.setCanvasCoords(coords);
+        props.updateChosenColor({coords});
       }
     },
-    handleHueCanvasMouse: props => evt => {
-      if (props.hueMouseDown) {
-        const x = util.restrict(0, evt.clientX - props.hueMouseDown.left, props.hueMouseDown.width);
-        props.setHue(Math.trunc(x / props.hueMouseDown.width * 360));
-        props.renderColorCanvas();
+    handleHueCanvasMouse: props => (evt, hueMouseDown) => {
+      hueMouseDown = hueMouseDown || props.hueMouseDown; 
+      if (hueMouseDown) {
+        const x = util.restrict(0, evt.clientX - hueMouseDown.left, hueMouseDown.width);
+        const hue = Math.trunc(x / hueMouseDown.width * 360);
+        props.setHue(hue);
+        const imageData = props.renderColorCanvas({hue});
+        props.updateChosenColor({imageData});
       }
     },
   }),
   withHandlers({
     onColorMouseDown: props => evt => {
-      props.setColorMouseDown(evt.target.getBoundingClientRect());
-      props.handleColorCanvasMouse(evt);
+      const rect = evt.target.getBoundingClientRect();
+      props.setColorMouseDown(rect);
+      props.handleColorCanvasMouse(evt, rect);
     },
     onHueMouseDown: props => evt => {
-      props.setHueMouseDown(evt.target.getBoundingClientRect());
-      props.handleHueCanvasMouse(evt);
+      const rect = evt.target.getBoundingClientRect();
+      props.setHueMouseDown(rect);
+      props.handleHueCanvasMouse(evt, rect);
     },
     onMouseUp: props => _ => {
       props.setColorMouseDown(false);

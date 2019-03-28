@@ -4,6 +4,10 @@ import App from './App';
 import './style.css';
 import * as serviceWorker from './serviceWorker';
 
+window.onbeforeunload = function () {
+  return true;
+}
+
 ReactDOM.render(<App />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
