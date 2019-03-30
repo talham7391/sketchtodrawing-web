@@ -5,6 +5,7 @@ import { STAGES } from './util.js';
 import WorkShop from '../components/WorkShop';
 import { observer } from 'mobx-react';
 import CursorOverlay from '../components/CursorOverlay';
+import { Prompt } from 'react-router-dom';
 
 const App = observer(props => (
   <Fragment>
@@ -17,6 +18,7 @@ const App = observer(props => (
       }
     </S.App>
     <CursorOverlay />
+    <Prompt message="Are you sure you want to leave?"/>
   </Fragment>
 ));
 
