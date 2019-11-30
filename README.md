@@ -25,3 +25,9 @@ I developed this app to polish up my rusty frontend skills. Some cool features:
 4. `yarn start`
 
 # Screenshots
+
+<div align="center">
+    <img src="https://i.imgur.com/EeyvSMn.png"/>
+    <img src="https://i.imgur.com/nStHEmr.png"/>
+    <img src="https://i.imgur.com/JnmRqtY.png"/>
+</div>
