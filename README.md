@@ -1,9 +1,27 @@
-# sketch-to-drawing
+# Sketch to Drawing
 
-### Objective
+If you'd like to try this app, it is hosted here: http://sketch-to-draw.surge.sh/
 
-This library should be able to take a hand drawn sketch (with a blank background & no shading), and convert it to a digital image where:
-- The sketch lines are replaced with curves & lines
-- Enclosed faces are detected (so that they can be colored in...)
+# Objective
 
-There are sample sketch images in the repository to test out the library.
+I developed this app to polish up my rusty frontend skills. Some cool features:
+
+* You can upload an image from your desktop as a starting point
+    * Automatically isolate pencil/pen lines
+    * Soften or thicken the isolated lines
+* Multiplayer layers / layer re-ordering
+* Custom color picker
+* Rope - soften your lines by increasing the size of your rope. Best understood through demonstration:
+
+<div align="center">
+    <img src="https://i.imgur.com/Unu9KVR.gif"/>
+</div>
+
+# Development
+
+1. `git clone git@github.com:talham7391/sketchtodrawing-web.git`
+2. `cd sketchtodrawing-web`
+3. `yarn`
+4. `yarn start`
+
+# Screenshots
